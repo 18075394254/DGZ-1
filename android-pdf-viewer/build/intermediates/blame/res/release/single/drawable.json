@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\build\\intermediates\\res\\merged\\release\\drawable\\default_scroll_handle_bottom.xml",
+        "source": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\src\\main\\res\\drawable\\default_scroll_handle_bottom.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\build\\intermediates\\res\\merged\\release\\drawable\\default_scroll_handle_right.xml",
+        "source": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\src\\main\\res\\drawable\\default_scroll_handle_right.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\build\\intermediates\\res\\merged\\release\\drawable\\default_scroll_handle_left.xml",
+        "source": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\src\\main\\res\\drawable\\default_scroll_handle_left.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\build\\intermediates\\res\\merged\\release\\drawable\\default_scroll_handle_top.xml",
+        "source": "D:\\AndroidStudioProjects\\DGZ-1\\android-pdf-viewer\\src\\main\\res\\drawable\\default_scroll_handle_top.xml"
+    }
+]

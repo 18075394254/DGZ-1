@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/lin1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#4468d4"
+        >
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试结果"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            />
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/arrow_left"
+            android:layout_alignTop="@+id/titleText"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        >
+        <Button
+            android:id="@+id/btn_showDetails"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="详细数据"></Button>
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="上传报告"></Button>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv"
+        android:layout_below="@+id/lin2"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#534a4a"
+        />
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/mBarChart"
+        android:layout_height="match_parent"
+
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp">
+
+    </com.github.mikephil.charting.charts.BarChart>
+
+   <!-- <Button
+        android:id="@+id/btn_show_values"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="顶点显示值"></Button>
+    <Button
+        android:id="@+id/btn_anim_x"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="X轴动画"></Button>
+    <Button
+        android:id="@+id/btn_anim_y"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Y轴动画"></Button>
+    <Button
+        android:id="@+id/btn_anim_xy"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="XY轴动画"></Button>
+
+
+
+
+
+
+    <Button
+        android:id="@+id/btn_save_pic"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="保存到相册"></Button>
+    <Button
+        android:id="@+id/btn_auto_mix_max"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="自动最大最小值"></Button>
+    <Button
+        android:id="@+id/btn_actionToggleHighlight"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="高亮显示"></Button>
+    <Button
+        android:id="@+id/btn_show_border"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="显示边框"></Button>-->
+</LinearLayout>

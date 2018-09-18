@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:background="@color/paleturquoise"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#4468d4"
+        >
+
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/arrow_left"
+
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+             />
+
+
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="复位"
+
+            android:textSize="18sp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/text_tishi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/relative"
+        android:text="@string/tishi" />
+
+    <TextView
+        android:id="@+id/set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请设置钢丝绳根数:"
+        android:textSize="20sp"
+        android:layout_below="@+id/text_tishi"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        />
+   <LinearLayout
+       android:id="@+id/linear"
+       android:orientation="horizontal"
+       android:layout_width="match_parent"
+       android:layout_height="50dp"
+       android:layout_below="@+id/set"
+       android:gravity="center_horizontal"
+       android:layout_marginTop="20dp"
+       >
+
+       <EditText
+           android:id="@+id/inputNum"
+           android:layout_width="100dp"
+           android:layout_height="40dp"
+           android:inputType="number"
+           android:textSize="20sp"
+           android:layout_gravity="center"
+           android:ems="10"
+           android:gravity="center"
+           android:textColor="@color/red"
+
+           android:background="@color/white"
+           />
+
+        <Button
+            android:id="@+id/btn_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认"
+            android:layout_marginLeft="15dp"
+            />
+       </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+
+        >
+
+
+        <EditText
+            android:id="@+id/curNum"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:enabled="false"
+            android:singleLine="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="30dp"/>
+       <Button
+           android:id="@+id/startTest"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="20dp"
+           android:layout_marginRight="20dp"
+           android:layout_marginTop="20dp"
+           android:background="@drawable/button_style"
+           android:text="开始测试"
+           />
+        <TextView
+            android:id="@+id/curTishi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:text="未开始测试"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear3"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear2"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="张紧力值:"
+            android:textSize="20sp"
+
+            />
+        <EditText
+            android:id="@+id/testValue"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:inputType="number"
+            android:ems="10"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:layout_marginLeft="10dp"
+            android:enabled="false"
+
+            android:background="@color/white"
+            android:text=""
+
+            android:focusable="false"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/lookData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_style"
+        android:layout_below="@+id/linear3"
+        android:text="查看数据"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

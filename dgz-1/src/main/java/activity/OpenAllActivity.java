@@ -80,7 +80,7 @@ public class OpenAllActivity extends Activity implements Adapter.OnShowItemClick
     PictureDatabase pictureDB;
     SQLiteDatabase db;
 
-    String xlsName = "DM-3数据表格.xls";
+    String xlsName = "DGZ-1S数据表格.xls";
     private int type =0;
 
     /* (non-Javadoc)

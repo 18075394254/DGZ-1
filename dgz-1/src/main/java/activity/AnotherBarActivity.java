@@ -123,7 +123,6 @@ public class AnotherBarActivity extends Activity {
                         Toast.makeText(AnotherBarActivity.this, "保存图片失败", Toast.LENGTH_SHORT).show();
                     }
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(AnotherBarActivity.this, "写入文件出错", Toast.LENGTH_SHORT).show();

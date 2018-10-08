@@ -47,39 +47,81 @@
         android:layout_below="@+id/relative"
         android:text="@string/tishi" />
 
-    <TextView
-        android:id="@+id/set"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="请设置钢丝绳根数:"
-        android:textSize="20sp"
+
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal"
         android:layout_below="@+id/text_tishi"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        />
-   <LinearLayout
-       android:id="@+id/linear"
-       android:orientation="horizontal"
-       android:layout_width="match_parent"
-       android:layout_height="50dp"
-       android:layout_below="@+id/set"
-       android:gravity="center_horizontal"
-       android:layout_marginTop="20dp"
-       >
+        >
+        <TextView
+            android:id="@+id/set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请设置钢丝绳根数:"
+            android:textSize="20sp"
 
-       <EditText
-           android:id="@+id/inputNum"
-           android:layout_width="100dp"
-           android:layout_height="40dp"
-           android:inputType="number"
-           android:textSize="20sp"
-           android:layout_gravity="center"
-           android:ems="10"
-           android:gravity="center"
-           android:textColor="@color/red"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            />
+        <EditText
+            android:id="@+id/inputNum"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:inputType="number"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:layout_marginLeft="15dp"
+            android:background="@color/white"
+            />
+        <Button
 
-           android:background="@color/white"
-           />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认"
+            android:layout_marginLeft="15dp"
+            android:visibility="invisible"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear4"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/linear"
+        >
+        <TextView
+            android:id="@+id/setCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置每根测试次数:"
+            android:textSize="20sp"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            />
+        <EditText
+            android:id="@+id/inputCount"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:inputType="number"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:text="1"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:layout_marginLeft="15dp"
+            android:background="@color/white"
+            />
 
         <Button
             android:id="@+id/btn_sure"
@@ -88,19 +130,25 @@
             android:text="确认"
             android:layout_marginLeft="15dp"
             />
-       </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear2"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear"
+        android:layout_below="@+id/linear4"
         android:gravity="center_horizontal"
         android:visibility="gone"
-
         >
-
+        <TextView
+            android:id="@+id/curTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:text="当前测试第1根"
+            />
 
         <EditText
             android:id="@+id/curNum"
@@ -115,7 +163,7 @@
             android:singleLine="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="20dp"/>
        <Button
            android:id="@+id/startTest"
            android:layout_width="match_parent"
@@ -126,6 +174,18 @@
            android:background="@drawable/button_style"
            android:text="开始测试"
            />
+
+        <Button
+            android:id="@+id/stopTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:text="停止测试"
+            android:background="@drawable/button_style"
+            />
+
         <TextView
             android:id="@+id/curTishi"
             android:layout_width="wrap_content"
@@ -160,17 +220,17 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:inputType="number"
-            android:ems="10"
+            android:ems="5"
             android:textSize="20sp"
             android:gravity="center"
             android:textColor="@color/red"
             android:layout_marginLeft="10dp"
             android:enabled="false"
-
             android:background="@color/white"
             android:text=""
-
             android:focusable="false"/>
+
+
     </LinearLayout>
 
     <Button

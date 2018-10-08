@@ -48,7 +48,7 @@ public class MoreMessageActivity extends BaseActivity {
         if(datalist != null && datalist.size()>0) {
 
          for (int i =0 ;i<datalist.size();i++){
-             list.add("第"+(i+1)+"根张紧力： "+datalist.get(i));
+             list.add("第"+(i+1)+"根张紧力： "+datalist.get(i)+" N");
          }
 
         }

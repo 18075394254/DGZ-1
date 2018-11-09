@@ -92,20 +92,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/button_shape"
             android:layout_centerHorizontal="true"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="导入数据"
-            android:textSize="@dimen/textSize"
-            android:id="@+id/importdata"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/importdata"
-            android:paddingLeft="@dimen/paddingPic"
-            android:gravity="center_vertical"
-            android:drawablePadding="10dip"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:background="@drawable/button_shape"
-            android:layout_centerHorizontal="true"/>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,9 +110,24 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="清空内存"
+            android:text="使用说明"
             android:textSize="@dimen/textSize"
-            android:id="@+id/cleardata"
+            android:id="@+id/instruction"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/importdata"
+            android:paddingLeft="@dimen/paddingPic"
+            android:gravity="center_vertical"
+            android:drawablePadding="10dip"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/button_shape"
+            android:layout_centerHorizontal="true"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="退出程序"
+            android:textSize="@dimen/textSize"
+            android:id="@+id/exit"
             android:layout_weight="1"
             android:drawableLeft="@drawable/clear"
             android:paddingLeft="@dimen/paddingPic"
@@ -133,6 +135,7 @@
             android:drawablePadding="10dip"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/button_shape"
+
             />
         </LinearLayout>
 

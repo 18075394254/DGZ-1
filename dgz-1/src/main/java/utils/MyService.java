@@ -55,6 +55,7 @@ public class MyService extends Service {
                         String dateStr = formatter.format(curDate);
                         intent = new Intent();
                         intent.putExtra("msg", message);
+                        Log.i("mtag", "MyService value = " + message);
                         intent.setAction("android.intent.action.ontestActivity");
                         sendBroadcast(intent);
 
@@ -148,8 +149,9 @@ public class MyService extends Service {
             state=activity;
         }
         //发送字符数组
-        public void sendbytes(byte[] bytes){
+        public void sendbytes(byte[] bytes,int activity){
             bt.send(bytes,false);
+            state=activity;
         }
 
         public void closeConnect(){

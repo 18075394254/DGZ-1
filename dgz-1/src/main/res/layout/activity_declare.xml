@@ -31,12 +31,13 @@
         android:layout_below="@+id/title"
         android:background="@drawable/button_style"
       android:layout_marginTop="50dp"
+        android:visibility="invisible"
        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="位移系数标定"
+        android:text="点击开始标定"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/btn_decDis"

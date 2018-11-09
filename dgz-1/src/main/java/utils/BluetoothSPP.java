@@ -192,6 +192,7 @@ public class BluetoothSPP {
                     String message= (String) msg.obj;
                     if (message != null) {
                         if (mDataReceivedListener != null) {
+                            Log.i("mtag","SPP Value = "+message);
                             mDataReceivedListener.onDataReceived(bytes, message);
                             Log.i("wp123", "messageData 接收到数据了");
                         }

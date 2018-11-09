@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.user.dm_3.R;
 
 import controller.BaseActivity;
+import utils.BluetoothState;
 import utils.MyService;
 
 /**
@@ -29,15 +30,23 @@ public class DeclareActivity extends BaseActivity {
     private Button btn_decForce,btn_decDis,btn_backMain;
     private MyService.DiscoveryBinder mBinder;
 
+    private int count = 0;
     //标定零点的处理
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             String message = (String) msg.obj;
-            if(message.equals("H1")) {
-                btn_decForce.setTextColor(Color.BLACK);
-                Toast.makeText(DeclareActivity.this, "零点标定已经完成！", Toast.LENGTH_SHORT).show();
-            }
+            if(message.equals("E1")) {
+                btn_decDis.setTextColor(Color.BLACK);
+                count++;
+                if (count < 3){
+                    Toast.makeText(DeclareActivity.this, "第"+count+"标定已经完成！", Toast.LENGTH_SHORT).show();
+                 }else{
+                    Toast.makeText(DeclareActivity.this, "三次标定已经完成！", Toast.LENGTH_SHORT).show();
+
+                }
+
+                }
         }
     };
     ServiceConnection connection = new ServiceConnection() {
@@ -85,10 +94,12 @@ public class DeclareActivity extends BaseActivity {
         btn_decDis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DeclareActivity.this, DecDisActivity.class));
+                //startActivity(new Intent(DeclareActivity.this, DecDisActivity.class));
+                mBinder.sendMessage("E1", BluetoothState.CESHIACTIVITY);
+                btn_decDis.setTextColor(Color.RED);
             }
         });
-      /*  btn_decZero.setOnClickListener(new View.OnClickListener() {
+        /*btn_decZero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mBinder.sendMessage("H1", BluetoothState.CESHIACTIVITY);

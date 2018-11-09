@@ -69,7 +69,7 @@
             />
         <EditText
             android:id="@+id/inputNum"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="40dp"
             android:inputType="number"
             android:textSize="20sp"
@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="确认"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:visibility="invisible"
             />
 
@@ -110,7 +110,7 @@
             />
         <EditText
             android:id="@+id/inputCount"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="40dp"
             android:inputType="number"
             android:textSize="20sp"
@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="确认"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             />
     </LinearLayout>
 
@@ -184,6 +184,7 @@
             android:layout_marginTop="20dp"
             android:text="停止测试"
             android:background="@drawable/button_style"
+            android:visibility="gone"
             />
 
         <TextView
@@ -240,6 +241,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/button_style"
         android:layout_below="@+id/linear3"
         android:text="查看数据"

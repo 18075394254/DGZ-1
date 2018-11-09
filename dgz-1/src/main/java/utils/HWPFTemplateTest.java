@@ -2,8 +2,8 @@ package utils;
 
 import android.content.res.AssetManager;
 
-import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.usermodel.Range;
+/*import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Range;*/
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import controller.MyApplication;
          */
 
 
-        public void testTemplateWrite(String docPath,String people,String time,String location,String number,String picPath) throws Exception {
+      /*  public void testTemplateWrite(String docPath,String people,String time,String location,String number,String picPath) throws Exception {
            // String templatePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "model.doc";
             InputStream is = null;
             AssetManager manager = MyApplication.getContext().getAssets();
@@ -49,10 +49,10 @@ import controller.MyApplication;
             this.closeStream(is);
         }
 
-        /**
+        *//**
          * 关闭输入流
          * @param is
-         */
+         *//*
         private void closeStream(InputStream is) {
             if (is != null) {
                 try {
@@ -63,10 +63,10 @@ import controller.MyApplication;
             }
         }
 
-        /**
+        *//**
          * 关闭输出流
          * @param os
-         */
+         *//*
         private void closeStream(OutputStream os) {
             if (os != null) {
                 try {
@@ -75,5 +75,5 @@ import controller.MyApplication;
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
 }

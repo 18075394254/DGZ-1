@@ -39,7 +39,7 @@ public class UseExplainActivity extends BaseActivity implements OnPageChangeList
     public static final int PERMISSION_CODE = 42042;
 
     public static final String SAMPLE_FILE = "sample.pdf";
-    public static final String DM3_FILE = "DM-2.pdf";
+    public static final String DM3_FILE = "DGZ-1S.pdf";
 
     PDFView pdfView;
 

@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +45,7 @@ public class BluetoothService {
 
     //接收下位机数据分类
     private static final int RECEIVE_COMMAND = 1;
-    private static final int RECEIVE_B1 = 2;
+    private static final int RECEIVE_DATA = 2;
     private static final int RECEIVE_CESHI = 3;
     //导入数据标志
     private static final int RECEIVE_ALLDATA = 4;
@@ -393,23 +394,32 @@ public class BluetoothService {
                                 }
                                 switch(receiveState){
 
-                                    case RECEIVE_B1:
-
+                                    case RECEIVE_DATA:
+                                         int value = 0;
                                         for(int i=0;i<availableBytes;i++){
                                             all[index]=bt[i];
                                             index++;
                                         }
-                                        if(index>1) {
+                                        if(index > 3) {
                                             msg = new String(all, 0, index);
-                                            Log.i("wpcyy628254", "msg = " + msg);
+                                            Log.i("mtag","msg = "+msg);
+                                            byte[] databytes = new byte[4];
+                                            byte[] toubytes = new byte[2];
 
-                                            if (msg.contains("B1")){
-                                                mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, "B1").sendToTarget();
-                                                count=0;
+                                            for (int i = 0; i < databytes.length; i++) {
+                                                databytes[i] = all[i];
                                             }
-                                            index = 0;
+                                            toubytes[0] = databytes[0];
+                                            toubytes[1] = databytes[1];
+                                            if (DataTrans.BytesToString(toubytes).equals("A1")) {
 
-                                            sb.delete(0, sb.length());
+                                                value =   DataTrans.TwoHexToInt(databytes[2], databytes[3]);
+                                                Log.i("mtag","value = "+value);
+                                                mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, value+"").sendToTarget();
+                                                all = new byte[1024 * 1024 * 10];
+                                                index = 0;
+                                                sb.delete(0, sb.length());
+                                            }
                                         }
 
                                         break;
@@ -423,51 +433,12 @@ public class BluetoothService {
                                         if(index>1) {
                                             msg = new String(all, 0, index);
                                             mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, msg).sendToTarget();
-                                            Log.i("wpcyy628254", "msg = " + msg);
-                                            //如果接收的命令是A1，就开启接收三组数据的模式
-                                            if (msg.equals("A1")){
-                                                receiveState =  RECEIVE_THREEDATA;
-                                            }
                                             index = 0;
-
                                             sb.delete(0, sb.length());
                                         }
 
                                         break;
 
-                                    //每次测试时接收的三组数据
-                                    case RECEIVE_THREEDATA:
-                                        Log.i("wpcyy628254", "接收到数据");
-                                        count++;
-                                        for(int i=0;i<availableBytes;i++){
-                                            all[index]=bt[i];
-                                            index++;
-                                        }
-                                        Log.i("wpcyy628254", "index = " + index);
-                                        if (index == 12){
-                                            for (int i = 0;i < index;i+=2){
-                                             sb.append(DataTrans.TwoBytesToInt(all[i], all[i + 1]) + " , ");
-                                            }
-                                             //将字符串赋值给全局变量
-                                            MyApplication.setString(sb.toString());
-                                        /*    if (count == 1){
-                                                //发送A3给测试界面，提示收到三组小数据，可以解析显示了
-                                                mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, "A3").sendToTarget();
-
-                                            }else{*/
-                                                //发送A2给测试界面，提示收到三组小数据，可以解析显示了
-                                                mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, "A2").sendToTarget();
-
-                                            //}
-
-                                            all=new byte[1024*1024*10];
-                                            index=0;
-
-
-                                            sb.delete(0, sb.length());
-                                        }
-
-                                        break;
 
 
                                     case RECEIVE_CESHI:
@@ -553,55 +524,28 @@ public class BluetoothService {
                 if(bufferlen == 2){
                     String command=DataTrans.BytesToString(buffer);
                     if(command.equals(DataTrans.FORCESTART)){
-                        Log.i("wp123", "发送A1到设备，让测力仪设备开始测试");
-                        receiveState=RECEIVE_COMMAND;
+                        Log.i("wp123", "发送A1到设备，让设备开始测试");
+                        receiveState=RECEIVE_DATA;
 
                     }else if(command.equals(DataTrans.FORCESTOP)){
-                        Log.i("wp123", "发送B1到设备，让测力仪设备停止测试");
-                        receiveState = RECEIVE_B1;
+                        Log.i("wp123", "发送B1到设备，让设备停止测试");
+                        receiveState = RECEIVE_COMMAND;
 
                     }else if(command.equals(DataTrans.FORCECLEAR)){
-                        Log.i("wp123", "发送C1到设备，让测力仪设备清空缓存");
+                        Log.i("wp123", "发送C1到设备，让设备清空缓存");
                         receiveState=RECEIVE_COMMAND;
 
                     }else if(command.equals(DataTrans.FORCEPATCHDATA)){
-                        Log.i("wp123", "发送D1到设备，让测力仪设备批量导入数据");
+                        Log.i("wp123", "发送D1到设备，让设备批量导入数据");
                        // receiveState=RECEIVE_CESHI;
                         receiveState=RECEIVE_ALLDATA;
 
-                    }else if(command.equals(DataTrans.FORCECONTINUETEST)){
-                        Log.i("wp123", "发送E1到设备，让测力仪设备持续测试");
-                        receiveState=RECEIVE_COMMAND;
-
-                    }else if(command.equals(DataTrans.DECLAREZERO)){
-                        Log.i("wp123", "发送H1到设备，让测力仪标定零点");
-                        receiveState=RECEIVE_COMMAND;
-
-                    }else if(command.equals(DataTrans.FORCEREADRATEDECLARE)){
-                        Log.i("wp123", "发送G1到设备，读取压力标定系数");
-                        receiveState=RECEIVE_DEC_FORCE_SPEED_RATE;
-
+                    }else if(command.equals(DataTrans.FORCECONTINUETEST)) {
+                        Log.i("wp123", "发送E1到设备，让设备持续测试");
+                        receiveState = RECEIVE_DATA;
                     }
-                    //F1+#+’ST’(2Byte)+压力标定系数(2Byte)+’END’(3Byte)+*
-                }else if(bufferlen==11){
-                    byte[] bt=new byte[2];
-                    bt[0]=buffer[0];
-                    bt[1]=buffer[1];
-                    String command=DataTrans.BytesToString(bt);
-                    if(command.equals(DataTrans.FORCESENDRATEDECLARE)) {
-                        Log.i("wp123", "发送F1+ST+#+压力标定系数+END+*");
-                        receiveState=RECEIVE_COMMAND;
-
-                    }else if(command.equals(DataTrans.SPEEDSENDRATEDECLARE)){
-                        Log.i("wp123", "发送F2+ST+#+速度标定系数+END+*");
-                        receiveState=RECEIVE_COMMAND;
-                    }
-
-                }else if(bufferlen == 8){
-                    Log.i("wp123", "发送时间到设备上");
-                    receiveState=RECEIVE_ITIME;
                 }else{
-                    receiveState=RECEIVE_CESHI;
+                    receiveState = RECEIVE_COMMAND;
                 }
 
 

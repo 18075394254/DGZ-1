@@ -68,6 +68,7 @@ public class OnTestActivity extends BaseActivity {
     private float dis=0;
     private boolean isConnect=true;
     private boolean isStart=false;
+    private boolean cantest=true;
     //将所有的测试数据拼接成一个字符串
     String totalData = "";
     //用来表示接收到的每个数据的值
@@ -78,7 +79,7 @@ public class OnTestActivity extends BaseActivity {
     private Intent bindIntent;
     private MyReceiver receiver;
     String filename=null;
-    private boolean cantest=true;
+
 
     Calculate calculate=new Calculate();
     //将数据计算后得到的map数组

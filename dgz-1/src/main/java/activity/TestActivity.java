@@ -1,11 +1,18 @@
 package activity;
 
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -19,12 +26,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.user.dm_3.R;
 
+import com.example.user.dm_3.R;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,8 +40,10 @@ import java.util.Date;
 import controller.BaseActivity;
 import controller.MyApplication;
 import controller.PictureDatabase;
+import utils.BluetoothState;
 import utils.Calculate;
-import view.MySeverityGaiView;
+import utils.DataTrans;
+import utils.MyService;
 
 /**
  * Created by user on 2018/9/12.
@@ -50,86 +60,117 @@ public class TestActivity extends BaseActivity {
     PictureDatabase pictureDB;
     SQLiteDatabase db;
     StringBuilder dataString = new StringBuilder();
+    private boolean isConnect=true;
+    private boolean isStart=false;
+    private boolean cantest=true;
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            int value = msg.arg1;
-            ed_testValue.setText(value + "");
-            mArrayList.add(value + "");
-            btn_start.setEnabled(true);
-            if (curCount == totalCount) {
-                if (testCount > 1){
+            String message = (String) msg.obj;
+            if (message.equals("OK")) {
 
-                    tv_curState.setText("测试完成");
-                    if (curTestCount == testCount) {
-                        tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击查看详细数据");
-                        dataString.append(value + ",");
-                        curCount++;
-                        curTestCount = 1;
-                        onSave();
-                        btn_look.setVisibility(View.VISIBLE);
-                        btn_start.setEnabled(false);
-                    } else {
-                        tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curTestCount + 1) + "次");
-                        dataString.append(value + ",");
-                        //  curCount++;
-                        curTestCount++;
-                    }
+            } else {
+                float value = Float.parseFloat((String)msg.obj)/10;
+                //保留一位小数
+                BigDecimal b = new BigDecimal(value);
+
+                 value = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+                ed_testValue.setText(value + "");
+                mArrayList.add(value + "");
+                btn_start.setEnabled(true);
+                if (curCount == totalCount) {
+                    if (testCount > 1) {
+
+                        tv_curState.setText("测试完成");
+                        if (curTestCount == testCount) {
+                            tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击查看详细数据");
+                            dataString.append(value + ",");
+                            curCount++;
+                            curTestCount = 1;
+                            onSave();
+                            btn_look.setVisibility(View.VISIBLE);
+                            btn_start.setEnabled(false);
+                        } else {
+                            tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curTestCount + 1) + "次");
+                            dataString.append(value + ",");
+                            //  curCount++;
+                            curTestCount++;
+                        }
 
                    /* tv_curNum.setText("第" + curCount + "根第" + curTestCount + "次测试完成," + "点击查看详细数据");
                     dataString.append(value + "");*/
 
-                }else{
-                    tv_curNum.setText("第" + curCount + "根测试完成," + "点击查看详细数据");
-                    dataString.append(value + "");
-                    onSave();
-                    btn_look.setVisibility(View.VISIBLE);
-                    btn_start.setEnabled(false);
-                }
-
-
-            } else {
-
-                if (testCount > 1) {
-                    tv_curState.setText("测试完成");
-                    if (curTestCount == testCount) {
-                        tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curCount + 1) + "根");
-                        dataString.append(value + ",");
-                        curCount++;
-                        curTestCount = 1;
                     } else {
-                        tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curTestCount + 1) + "次");
-                        dataString.append(value + ",");
-                      //  curCount++;
-                        curTestCount++;
-                    }
-
-
-                } else if (testCount == 1) {
-
-                    tv_curState.setText("测试完成");
-                    if (curCount == totalCount) {
+                        tv_curState.setText("测试完成");
                         tv_curNum.setText("第" + curCount + "根测试完成," + "点击查看详细数据");
                         dataString.append(value + "");
                         onSave();
                         btn_look.setVisibility(View.VISIBLE);
                         btn_start.setEnabled(false);
-
-                    } else {
-                        tv_curNum.setText("第" + curCount + "根测试完成," + "点击测试第" + (curCount + 1) + "根");
-                        dataString.append(value + ",");
-                        curCount++;
                     }
 
+
+                } else {
+
+                    if (testCount > 1) {
+                        tv_curState.setText("测试完成");
+                        if (curTestCount == testCount) {
+                            tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curCount + 1) + "根");
+                            dataString.append(value + ",");
+                            curCount++;
+                            curTestCount = 1;
+                        } else {
+                            tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curTestCount + 1) + "次");
+                            dataString.append(value + ",");
+                            //  curCount++;
+                            curTestCount++;
+                        }
+
+
+                    } else if (testCount == 1) {
+
+                        tv_curState.setText("测试完成");
+                        if (curCount == totalCount) {
+                            tv_curNum.setText("第" + curCount + "根测试完成," + "点击查看详细数据");
+                            dataString.append(value + "");
+                            onSave();
+                            btn_look.setVisibility(View.VISIBLE);
+                            btn_start.setEnabled(false);
+
+                        } else {
+                            tv_curNum.setText("第" + curCount + "根测试完成," + "点击测试第" + (curCount + 1) + "根");
+                            dataString.append(value + ",");
+                            curCount++;
+                        }
+
+                    }
                 }
             }
         }
     };
+    private MyService.DiscoveryBinder mBinder;
+
+
+    ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            //获取Service端的Messenger
+            mBinder =(MyService.DiscoveryBinder)service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+
+
+    };
     private int indexDGZ =1;
     private String filename;
     private Calculate calculate = new Calculate();
-
+    private Intent bindIntent;
+    private MyReceiver receiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +199,21 @@ public class TestActivity extends BaseActivity {
         tv_curTest = getView(R.id.curTest);
 
         backImage = getView(R.id.back);
+        bindIntent = new Intent(this, MyService.class);
+        bindService(bindIntent, connection, BIND_AUTO_CREATE);
+
+        receiver = new MyReceiver();
+        IntentFilter filter=new IntentFilter();
+        filter.addAction("android.intent.action.ontestActivity");
+        filter.addAction("android.intent.action.connect");
+        filter.addAction("android.intent.action.disconnect");
+        filter.addAction("android.intent.action.connectfailed");
+        TestActivity.this.registerReceiver(receiver, filter);
+
+        IntentFilter filter1=new IntentFilter();
+        filter1.addAction("android.bluetooth.device.action.ACL_CONNECTED");
+        filter1.addAction("android.bluetooth.device.action.ACL_DISCONNECTED");
+        TestActivity.this.registerReceiver(mReceiver, filter1);
 
         backImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,24 +227,26 @@ public class TestActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                InputMethodManager imm = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                //判断有无输入根数
-                if (ed_setNum.getText().toString().length() != 0 && ed_setNum.getText().toString().length() != 0) {
-                    totalCount = Integer.parseInt(ed_setNum.getText().toString());
-                    testCount =  Integer.parseInt(ed_setCount.getText().toString());
-                    ed_setNum.setEnabled(false);
-                    ed_setCount.setEnabled(false);
-                    btn_sure.setEnabled(false);
-                    mLayout2.setVisibility(View.VISIBLE);
-                    mLayout3.setVisibility(View.VISIBLE);
-                    tv_curTest.setText("一共" + totalCount + "根, 当前为第"+curCount+"根");
-                   // tv_curNum.setText("一共" + totalCount + "根, 当前为第" + curCount + "根");
-                }else{
-                    Toast.makeText(TestActivity.this,"请输入设置参数",Toast.LENGTH_SHORT).show();
-                }
+                if (isConnect) {
 
+                        //判断有无输入根数
+                        if (ed_setNum.getText().toString().length() != 0 && ed_setNum.getText().toString().length() != 0) {
+                            totalCount = Integer.parseInt(ed_setNum.getText().toString());
+                            testCount = Integer.parseInt(ed_setCount.getText().toString());
+                            ed_setNum.setEnabled(false);
+                            ed_setCount.setEnabled(false);
+                            btn_sure.setEnabled(false);
+                            mLayout2.setVisibility(View.VISIBLE);
+                            mLayout3.setVisibility(View.VISIBLE);
+                            tv_curTest.setText("一共" + totalCount + "根, 当前为第" + curCount + "根");
+                            //mBinder.sendbytes(DataTrans.sendSetDataBytes(MainActivity.s_mLiftId, MainActivity.s_mOperator, MainActivity.s_mLocation, totalCount, testCount), BluetoothState.ONTESTACTIVITY);
+                        } else {
+                            Toast.makeText(TestActivity.this, "请输入设置参数", Toast.LENGTH_SHORT).show();
+                        }
+
+                }else {
+                    Toast.makeText(TestActivity.this, "未连接蓝牙设备", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -197,34 +255,26 @@ public class TestActivity extends BaseActivity {
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isConnect) {
+                    if (cantest) {
+                        isStart = true;
+                        mBinder.sendMessage("A1", BluetoothState.ONTESTACTIVITY);
+                        mLayout2.setVisibility(View.VISIBLE);
+                        tv_curState.setText("正在测试中....");
+                        if (curTestCount == testCount){
+                        tv_curTest.setText("一共" + totalCount + "根, 当前为第"+curCount+"根");
+                        tv_curNum.setText("当前为第"+curTestCount+"次测试");
+                    }else{
+                        tv_curTest.setText("一共" + totalCount + "根, 当前为第"+curCount+"根");
+                        tv_curNum.setText("当前为第"+curTestCount+"次测试");
+                     }
 
-                mLayout2.setVisibility(View.VISIBLE);
-                    tv_curState.setText("正在测试中....");
-                if (curTestCount == testCount){
-                    tv_curTest.setText("一共" + totalCount + "根, 当前为第"+curCount+"根");
-                    tv_curNum.setText("当前为第"+curTestCount+"次测试");
-                }else{
-                    tv_curTest.setText("一共" + totalCount + "根, 当前为第"+curCount+"根");
-                    tv_curNum.setText("当前为第"+curTestCount+"次测试");
+                        btn_start.setEnabled(false);
+                   }
+
+                }else {
+                    Toast.makeText(TestActivity.this, "未连接蓝牙设备", Toast.LENGTH_SHORT).show();
                 }
-
-                    btn_start.setEnabled(false);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1500);
-                            Message msg = new Message();
-                            msg.what = 0;
-                            msg.arg1 = 200+curCount;
-                            mHandler.sendMessage(msg);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-
 
             }
         });
@@ -232,7 +282,16 @@ public class TestActivity extends BaseActivity {
         btn_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isStart) {
+                    mBinder.sendMessage("B1", BluetoothState.ONTESTACTIVITY);
+                    btn_start.setTextColor(Color.BLACK);
+                    btn_stop.setTextColor(Color.RED);
+                    Log.i("mtag", "发送B1的时间 " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+                    isStart=false;
+                }else{
+                    Toast.makeText(TestActivity.this, "还未开始测试", Toast.LENGTH_SHORT).show();
 
+                }
             }
         });
 
@@ -285,8 +344,13 @@ public class TestActivity extends BaseActivity {
                 value = value + Float.parseFloat(arrayList.get(j));
                 Log.i("mtag","value = "+value);
             }
-            list.add(value/testCount+"");
-            dataString.append(value / testCount + ",");
+            value = value/testCount;
+            //保留一位小数
+            BigDecimal b = new BigDecimal(value);
+
+            value = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+            list.add(value+"");
+            dataString.append(value + ",");
             value = 0;
         }
 
@@ -331,6 +395,45 @@ public class TestActivity extends BaseActivity {
             dataString.setLength(0);
         }
 
+    }
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive (Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Log.d("aaa", device.getName() + " ACTION_ACL_CONNECTED");
+            } else if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
+                Log.d("aaa", " ACTION_ACL_DISCONNECTED");
+                //String message1="蓝牙断开连接";
+                //handler.obtainMessage(2, 1, -1, message1).sendToTarget();
+                TestActivity.this.finish();
+            }
+        }
+
+    };
+
+    public class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            if (intent.getAction().equals("android.intent.action.ontestActivity")) {
+                Bundle bundle = intent.getExtras();
+                String message = bundle.getString("msg");
+
+                mHandler.obtainMessage(0, 1, -1, message).sendToTarget();
+            }else if(intent.getAction().equals("android.intent.action.connect")){
+                Bundle bundle = intent.getExtras();
+                String message=bundle.getString("msg");
+                mHandler.obtainMessage(1, 1, -1, message).sendToTarget();
+            }else if(intent.getAction().equals("android.intent.action.disconnect")){
+
+            }else if(intent.getAction().equals("android.intent.action.connectfailed")){
+                Bundle bundle = intent.getExtras();
+                String message=bundle.getString("msg");
+                mHandler.obtainMessage(3, 1, -1, message).sendToTarget();
+            }
+        }
     }
 
 }

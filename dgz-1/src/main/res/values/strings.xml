@@ -19,7 +19,7 @@
     <string name="pwd2">再次输入密码</string>
     <string name="forgotpwd">忘记密码</string>
 
-    <string name="testid">设备编号</string>
+    <string name="testid">电梯编号</string>
     <string name="testtime">Time</string>
     <string name="operator">操作员</string>
     <string name="location">地点</string>

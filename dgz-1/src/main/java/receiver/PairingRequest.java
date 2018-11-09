@@ -22,11 +22,7 @@ public class PairingRequest extends BroadcastReceiver {
 
             BluetoothDevice device = intent
                     .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            if ( device.getName().contains("DM-3")){
-                strPsw = "1234";
-            }else{
-                strPsw = "1236";
-            }
+
             if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                 try {
                     abortBroadcast();//如果没有将广播终止，则会出现一个一闪而过的配对框。

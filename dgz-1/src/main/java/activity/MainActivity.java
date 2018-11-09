@@ -54,12 +54,12 @@ public class MainActivity extends BaseActivity {
     private Button setInfoButton;
     //开始测试按钮
     private Button onTestButton;
-    //数据导入按钮
-    private Button importButton;
+    //说明书按钮
+    private Button instructionButton;
     //打开文件按钮
     private Button openFileButton;
-    //清空数据按钮
-    private Button clearButton;
+    //退出系统按钮
+    private Button exitButton;
     //显示蓝牙状态信息的文本
     private TextView blueToothMsg;
     //蓝牙地址
@@ -138,9 +138,9 @@ public class MainActivity extends BaseActivity {
         connectButton = getView(R.id.connect);
         setInfoButton = getView(R.id.setinfo);
         onTestButton = getView(R.id.ontest);
-        importButton = getView(R.id.importdata);
+        instructionButton = getView(R.id.instruction);
         openFileButton = getView(R.id.openfile);
-        clearButton = getView(R.id.cleardata);
+        exitButton = getView(R.id.exit);
         blueToothMsg = getView(R.id.msg);
         //绑定Service
         bindIntent = new Intent(this, MyService.class);
@@ -164,12 +164,12 @@ public class MainActivity extends BaseActivity {
 
 
         // 注册Receiver来获取蓝牙设备相关的结果
-      /* IntentFilter intent = new IntentFilter();
+        IntentFilter intent = new IntentFilter();
         intent.addAction(BluetoothDevice.ACTION_FOUND);// 用BroadcastReceiver来取得搜索结果
         intent.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         intent.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         intent.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(searchDevices, intent);*/
+        registerReceiver(searchDevices, intent);
 
         //按钮的监听
         onClick();
@@ -208,17 +208,11 @@ public class MainActivity extends BaseActivity {
                 }*/
             }
         });
-        //导入数据按钮监听
-        importButton.setOnClickListener(new View.OnClickListener() {
+        //跳转到说明书界面
+        instructionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isConnect) {
-                    Intent intent = new Intent(MainActivity.this, ChooseDirActivity.class);
-
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(MainActivity.this, "未连接设备蓝牙", Toast.LENGTH_SHORT).show();
-                }
+                startActivity(new Intent(MainActivity.this,UseExplainActivity.class));
 
             }
         });   //打开文件按钮监听
@@ -228,35 +222,29 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, OpenAllActivity.class));
             }
         });
-        //清空数据按钮监听
-        clearButton.setOnClickListener(new View.OnClickListener() {
+        //退出程序
+        exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (isConnect) {
-                    Dialog alertDialog = new AlertDialog.Builder(MainActivity.this).
-                            setTitle("确定要清空数据吗？").
-                            setIcon(R.mipmap.launcher).
-                            setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mBinder.sendMessage("C1", BluetoothState.MAINACTIVITY);
-                                    Toast.makeText(MainActivity.this, "设备正在清空数据！", Toast.LENGTH_SHORT).show();
-                                }
-                            }).
-                            setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                Dialog alertDialog = new AlertDialog.Builder(MainActivity.this).
+                        setTitle("确定要退出程序吗？").
+                        setIcon(R.mipmap.launcher).
+                        setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                System.exit(0);
+                            }
+                        }).
+                        setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // TODO Auto-generated method stub
-                                }
-                            }).
-                            create();
-                    alertDialog.show();
-
-                } else {
-                    Toast.makeText(MainActivity.this, "未连接设备蓝牙", Toast.LENGTH_SHORT).show();
-                }
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                            }
+                        }).
+                        create();
+                alertDialog.show();
             }
         });
 

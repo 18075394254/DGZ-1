@@ -103,17 +103,7 @@ public class DataTrans {
 		}
 	}
 	
-	public static void readCalibrateValue(byte[] calibrateBytes){
-		calibrate_test_z = TwoBytesToInt(calibrateBytes[0], calibrateBytes[1]);
-		calibrate_real_z = TwoBytesToInt(calibrateBytes[2], calibrateBytes[3]);
-		calibrate_test_y = TwoBytesToInt(calibrateBytes[4], calibrateBytes[5]);
-		calibrate_real_y = TwoBytesToInt(calibrateBytes[6], calibrateBytes[7]);
-		calibrate_test_x = TwoBytesToInt(calibrateBytes[8], calibrateBytes[9]);
-		calibrate_real_x = TwoBytesToInt(calibrateBytes[10], calibrateBytes[11]);
-		calibrate_test_s = TwoBytesToInt(calibrateBytes[12], calibrateBytes[13]);
-		calibrate_real_s = TwoBytesToInt(calibrateBytes[14], calibrateBytes[15]);
-		calibrate_value_read = true;
-	}
+
 	
 	public static void copyfile(File fromFile, File toFile,Boolean rewrite){
 		if(!fromFile.exists()) {
@@ -353,8 +343,39 @@ public class DataTrans {
 		return byteArrayToHexString(array, false);
 	}
 
+	public static byte[] sendSetDataBytes(String place,String people,String liftNum,int num,int count){
+		byte[] bt1=StringToBytes(place);
+		byte[] bt2=StringToBytes(people);
+		byte[] bt3=StringToBytes(liftNum);
+		byte[] time = DataTrans.getTime();
+
+		byte[] dataBytes = new byte[7 + bt1.length + bt2.length + bt3.length + time.length];
+
+		dataBytes[0] = '#';
+		dataBytes[1] = (byte)bt1.length;
+		for (int i = 0;i < bt1.length; i++){
+			dataBytes[2+i] = bt1[i];
+		}
+		dataBytes[2+bt1.length] = (byte)bt2.length;
+		for (int i = 0;i < bt2.length; i++){
+			dataBytes[3+bt1.length+i] = bt2[i];
+		}
+		dataBytes[3+bt1.length+bt2.length] = (byte)bt3.length;
+		for (int i = 0;i < bt3.length; i++){
+			dataBytes[4+bt1.length+bt2.length+i] = bt3[i];
+		}
+
+		for (int i = 0; i < time.length; i++){
+			dataBytes[4+bt1.length+bt2.length+bt3.length+i] = time[i];
+		}
+		dataBytes[4+bt1.length+bt2.length+bt3.length+time.length] = (byte) num;
+		dataBytes[5+bt1.length+bt2.length+bt3.length+time.length] = (byte) count;
+		dataBytes[6+bt1.length+bt2.length+bt3.length+time.length] = '*';
+		return dataBytes;
+	}
+
 	public static byte[] getTime(){
-		byte[] byteTime = new byte[8];
+		byte[] byteTime = new byte[6];
 		Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
 		t.setToNow(); // 取得系统时间。
 		int year = t.year - 2000;
@@ -371,8 +392,7 @@ public class DataTrans {
 		byteTime[3] = (byte) hour;
 		byteTime[4] = (byte) minute;
 		byteTime[5] = (byte) second;
-		byteTime[6] = (byte) 0;
-		byteTime[7] = (byte) 0;
+
 		return byteTime;
 	}
 

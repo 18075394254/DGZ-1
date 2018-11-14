@@ -47,67 +47,9 @@ public class SendReceiveActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             String message = (String) msg.obj;
-            if (message.equals("D")){
-               /* sb.append(MyApplication.getString());
-                receiveText.setText(sb.toString());*/
-                final String[] s = MyApplication.getString().replace(" ", "").split(",");
-                Log.i("cyy123", "s.length=" + s.length);
-                // Toast.makeText(MyApplication.getContext(), "解析的字符串的长度为" + s.length, Toast.LENGTH_SHORT).show();
-                for (int i = 0; i < s.length; i++) {
-                    //Log.i("Tag", "s[i] = " + s[i]);
-                    sb.append(s[i]+" , ");
-                    if (s[i].contains("21332")) {
-                         list.add(i);
-                        // filsNum++;
-                        Log.i("Tag", "i = " + i);
-                    }
-                }
-                if (list.size() != 0) {
-                    if (list.size() == 1) {
-                        for (int j = list.get(0) + 2; j < s.length; j++) {
-                            m_cutData.add(Float.parseFloat(s[j]));
-                        }
-                        //  onSave(s[1]);
-                        for(int i=0;i<m_cutData.size();i++){
-                            Log.i("mtag", "m_cytData = " + m_cutData.get(i));
-                            sb.append(m_cutData.get(i) +" ");
-                        }
-
-                    } else {
-                        for (int k = 0; k < list.size(); k++) {
-                            if (k < list.size() - 1) {
-                                for (int j = list.get(k); j < list.get(k + 1); j++) {
-                                    //value = ((Float.parseFloat(s[j]) / 100));
-                                    dataString = dataString+ Float.parseFloat(s[j])+",";
-
-                                }
-                              dataString = dataString+"      一二三四五六七八九         ";
-                                // onSave(s[list.get(k) + 1]);
-
-                            } else {
-                                for (int j = list.get(list.size() - 1); j < s.length; j++) {
-                                    dataString = dataString+ Float.parseFloat(s[j])+",";
-
-                                }
-                                receiveText.setText(dataString+"               ");
-                                dataString="";
-                                // onSave(s[list.get(k) + 1]);
-                            }
-                        }
-                    }
-                }
-
-            }else if (message.equals("A2")){
-
-                sb.append(MyApplication.getString());
-                receiveText.setText(sb.toString());
-            }
-
-
-
-           /* MyApplication.setString("");
-            receiveText.setText(sb.toString());*/
-
+            sb.append(message+" ");
+            receiveText.setText(sb.toString());
+            mBinder.sendMessage("A1", BluetoothState.CESHIACTIVITY);
         }
     };
 

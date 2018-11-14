@@ -31,7 +31,7 @@ public class ExcelUtil {
 			Toast.makeText(context, "SD卡不可用", Toast.LENGTH_LONG).show();
 			return;
 		}
-		String[] title = {"文件名", "压力值", "位移值", "是否达标", "操作员", "地点", "设备"};
+		String[] title = {"文件名", "操作员", "地点", "设备"};
 
 		// 创建Excel工作表
 		WritableWorkbook wwb;

@@ -21,8 +21,10 @@
 
     <string name="testid">电梯编号</string>
     <string name="testtime">Time</string>
-    <string name="operator">操作员</string>
-    <string name="location">地点</string>
+    <string name="operator">测试人员</string>
+    <string name="location">测试地点</string>
+    <string name="company">测试单位</string>
+    <string name="supplement">补充信息</string>
     <string name="save_text">保存</string>
     <string name="cancel_text">取消</string>
 
@@ -43,8 +45,8 @@
     <string name="deviceName">设备名称</string>
     <string name="yindao">DGZ-1S</string>
     <string name="kongzai">空载标定:</string>
-    <string name="fuzai50N">50N负载标定:</string>
-    <string name="fuzai100N">100N负载标定:</string>
+    <string name="fuzai50N">150N负载标定:</string>
+    <string name="fuzai100N">300N负载标定:</string>
     <string name="lingdian">零点标定:</string>
     <string name="weiyifuzai">位移负载标定:</string>
     <string name="nextstep">下一步</string>

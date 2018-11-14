@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
@@ -21,7 +22,9 @@ import android.widget.Toast;
 
 import com.example.user.dm_3.R;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -52,6 +55,10 @@ public class AnotherBarActivity extends Activity {
     private ArrayList<String> infolist = new ArrayList<>();
     PictureDatabase pd;
     SQLiteDatabase sd;
+    float sum = 0;
+    float average;
+    float upAve = 0;
+    float downAve = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +98,7 @@ public class AnotherBarActivity extends Activity {
         btn_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 19) {
 
                 //获取sd卡目录
                 String sdpath = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -116,9 +124,12 @@ public class AnotherBarActivity extends Activity {
                         Bitmap bitmap = BitmapFactory.decodeStream(fis);
                         Log.i("mtag", "生成pdf文件前");
 
-                        calculate.GenPDF(AnotherBarActivity.this, wordPath, "DGZ-1", infolist.get(0).substring(0, 16), infolist.get(2), infolist.get(3), infolist.get(1), datalist, bitmap);
-                        Log.i("mtag", "生成pdf文件后");
-                        shareWordFile(wordPath);
+
+                            calculate.GenPDF(AnotherBarActivity.this, wordPath, "DGZ-1S", infolist.get(0).substring(0, 16), infolist.get(2), infolist.get(3), infolist.get(1),infolist.get(4), infolist.get(5),datalist, bitmap);
+                            Log.i("mtag", "生成pdf文件后");
+                            shareWordFile(wordPath);
+
+
                     } else {
                         Toast.makeText(AnotherBarActivity.this, "保存图片失败", Toast.LENGTH_SHORT).show();
                     }
@@ -137,7 +148,15 @@ public class AnotherBarActivity extends Activity {
                     }
 
                 }
+
+
+                }else{
+                    Toast.makeText(AnotherBarActivity.this, "当前手机版本过低，不能使用分享功能！", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
+
         });
     }
 
@@ -164,6 +183,45 @@ public class AnotherBarActivity extends Activity {
         xAxis.setDrawGridLines(false);
         xAxis.setLabelCount(datalist.size());//设置标签显示的个数
 
+        for (int i = 0 ;i < datalist.size();i++){
+           sum = sum+Float.parseFloat(datalist.get(i));
+        }
+        average = sum/datalist.size();
+        upAve = (float) (average*1.05);
+        downAve = (float) (average*0.95);
+        LimitLine ll0 = new LimitLine(average, "average");
+        ll0.setLineWidth(2f);
+        // ll0.setTypeface(tf);
+        //  ll0.enableDashedLine(10f, 10f, 0f);
+        ll0.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+        ll0.setTextSize(10f);
+
+        LimitLine ll1 = new LimitLine(upAve, "up5%");
+        ll1.setLineWidth(2f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll1.setTextSize(10f);
+
+        LimitLine ll2 = new LimitLine(downAve, "down5%");
+        ll2.setLineWidth(2f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+        ll2.setTextSize(10f);
+        YAxis leftAxis = mBarChart.getAxisLeft();
+        //重置所有限制线,以避免重叠线
+        leftAxis.removeAllLimitLines();
+        leftAxis.addLimitLine(ll0);
+        //设置优秀线
+        leftAxis.addLimitLine(ll1);
+        //设置及格线
+        leftAxis.addLimitLine(ll2);
+        //y轴最大
+        // leftAxis.setAxisMaximum(200f);
+        //y轴最小
+        // leftAxis.setAxisMinimum(0f);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawZeroLine(false);
+
         mBarChart.getAxisLeft().setDrawGridLines(false);
         mBarChart.animateY(1000);
         mBarChart.getLegend().setEnabled(false);
@@ -178,7 +236,7 @@ public class AnotherBarActivity extends Activity {
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
         for (int i = 0; i < datalist.size(); i++) {
-           // float mult = 50;
+
             float val = Float.parseFloat(datalist.get(i));
             yVals1.add(new BarEntry(i+1, val));
         }

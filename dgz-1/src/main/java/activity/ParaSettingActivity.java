@@ -19,6 +19,9 @@ public class ParaSettingActivity extends Activity
 	EditText idEdit=null;
 	EditText nameEdit=null;
 	EditText locationEdit=null;
+	EditText companyEdit =null;
+	EditText supplementEdit =null;
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -32,6 +35,8 @@ public class ParaSettingActivity extends Activity
 		idEdit= (EditText) findViewById(R.id.liftid);
 		nameEdit = (EditText) findViewById(R.id.operatorname);
 		locationEdit = (EditText)findViewById(R.id.location);
+		companyEdit = (EditText) findViewById(R.id.company);
+		supplementEdit = (EditText) findViewById(R.id.supplement);
 		loadConfig();
 		
 	}
@@ -43,16 +48,22 @@ public class ParaSettingActivity extends Activity
 		String strID = idEdit.getText().toString();
 		String strName = nameEdit.getText().toString();
 		String strLocation = locationEdit.getText().toString();
+		String strCompany = companyEdit.getText().toString();
+		String strSupplement = supplementEdit.getText().toString();
 		SharedPreferences sp = getSharedPreferences("info", Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
 		editor.putString("liftid", strID);
 		editor.putString("operator", strName);
 		editor.putString("location", strLocation);
+		editor.putString("company", strCompany);
+		editor.putString("supplement", strSupplement);
 		editor.commit();
 		
 		MainActivity.s_mLiftId = strID;
 		 MainActivity.s_mOperator = strName;
 		MainActivity.s_mLocation = strLocation;
+		MainActivity.s_mCompany = strCompany;
+		MainActivity.s_mSupplement = strSupplement;
 		finish();
 
 	}

@@ -44,22 +44,22 @@ public class DecForceActivity extends BaseActivity {
             if (message.equals("E1")) {
                 btn_startDec.setClickable(true);
                 if (text_tishi.getText().equals(getResources().getString(R.string.kongzai))) {
-                    et_tishi.setText("点击下一步进行50N负载标定！");
+                    et_tishi.setText("点击下一步进行150N负载标定！");
                     Toast.makeText(DecForceActivity.this, "空载标定成功", Toast.LENGTH_SHORT).show();
                     btn_startDec.setTextColor(Color.BLACK);
                     btn_startDec.setText("空载标定成功");
                     btn_next.setVisibility(View.VISIBLE);
 
                 }else if(text_tishi.getText().equals(getResources().getString(R.string.fuzai50N))){
-                    et_tishi.setText("点击下一步进行100N负载标定！");
-                    Toast.makeText(DecForceActivity.this, "50N负载标定成功", Toast.LENGTH_SHORT).show();
+                    et_tishi.setText("点击下一步进行300N负载标定！");
+                    Toast.makeText(DecForceActivity.this, "150N负载标定成功", Toast.LENGTH_SHORT).show();
                     btn_startDec.setTextColor(Color.BLACK);
-                    btn_startDec.setText("50N负载标定成功");
+                    btn_startDec.setText("150N负载标定成功");
                     btn_next.setVisibility(View.VISIBLE);
 
                 }else if(text_tishi.getText().equals(getResources().getString(R.string.fuzai100N))){
                     et_tishi.setText("负载标定完成，可以进行测试！");
-                    Toast.makeText(DecForceActivity.this, "100N负载标定成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DecForceActivity.this, "300N负载标定成功", Toast.LENGTH_SHORT).show();
                     btn_startDec.setText("标定完成，返回上一界面");
                     btn_startDec.setTextColor(Color.BLACK);
                 }
@@ -149,13 +149,13 @@ public class DecForceActivity extends BaseActivity {
                 btn_startDec.setText("开始标定");
                 if (text_tishi.getText().equals(getResources().getString(R.string.kongzai))) {
 
-                    et_tishi.setText("手动加到50N负载进行标定！");
+                    et_tishi.setText("手动加到150N负载进行标定！");
                     text_tishi.setText(getResources().getString(R.string.fuzai50N));
 
 
                 } else if (text_tishi.getText().equals(getResources().getString(R.string.fuzai50N))){
 
-                    et_tishi.setText("手动加到100N负载进行标定！");
+                    et_tishi.setText("手动加到300N负载进行标定！");
                     text_tishi.setText(getResources().getString(R.string.fuzai100N));
 
 
@@ -168,8 +168,13 @@ public class DecForceActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                btn_reset.setTextColor(Color.RED);
-                btn_reset.setClickable(false);
+                btn_startDec.setClickable(true);
+                btn_reset.setClickable(true);
+                text_tishi.setText(R.string.kongzai);
+                et_tishi.setText("点击按钮开始空载标定");
+                btn_reset.setTextColor(Color.BLACK);
+                btn_startDec.setText("开始标定");
+                btn_startDec.setTextColor(Color.BLACK);
             }
         });
 

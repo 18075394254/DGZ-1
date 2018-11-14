@@ -48,6 +48,8 @@ public class MainActivity extends BaseActivity {
     static String s_mLiftId="";
     static String s_mOperator="";
     static String s_mLocation="";
+    static String s_mCompany="";
+    static String s_mSupplement="";
     //连接蓝牙按钮
     private Button connectButton;
     //设置信息按钮
@@ -276,16 +278,27 @@ public class MainActivity extends BaseActivity {
         ListView listView;
         listView= (ListView) findViewById(R.id.listView);
         Button declare_menu= (Button) findViewById(R.id.declare_menu);
-
+        Button readdata = (Button) findViewById(R.id.readdata);
         declare_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // if (isConnect) {
-                    startActivity(new Intent(MainActivity.this, DeclareActivity.class));
-              /*  }else{
+               if (isConnect) {
+                    startActivity(new Intent(MainActivity.this, DecForceActivity.class));
+                }else{
                     Toast.makeText(MainActivity.this, "蓝牙未连接", Toast.LENGTH_SHORT).show();
 
-                }*/
+                }
+            }
+        });
+        readdata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isConnect) {
+                    startActivity(new Intent(MainActivity.this, SendReceiveActivity.class));
+                }else{
+                    Toast.makeText(MainActivity.this, "蓝牙未连接", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
         ArrayList<String> list=new ArrayList<>();
@@ -437,6 +450,8 @@ public class MainActivity extends BaseActivity {
         s_mLiftId = sp.getString("liftid", "");
         s_mOperator = sp.getString("operator", "");
         s_mLocation = sp.getString("location", "");
+        s_mCompany = sp.getString("company", "");
+        s_mSupplement = sp.getString("supplement", "");
     }
     //重写系统返回键
     @Override

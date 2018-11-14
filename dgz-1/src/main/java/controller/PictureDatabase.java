@@ -38,6 +38,10 @@ public class PictureDatabase extends SQLiteOpenHelper {
 
             + "name text, "
 
+            + "company text, "
+
+            + "supplement text, "
+
             + "data text)";//测试数据
 
     //数据库的字段
@@ -98,13 +102,15 @@ public class PictureDatabase extends SQLiteOpenHelper {
     }
 
     //将转换后的图片存入到数据库中
-    public void initDataBase(SQLiteDatabase db,  String tableName, String name, String liftid, String operator, String location, String data) {
+    public void initDataBase(SQLiteDatabase db,  String tableName, String name, String liftid, String operator, String location,String company, String supplement, String data) {
         ContentValues cv = new ContentValues();
         cv.put("name", name);
 
         cv.put("liftid", liftid);
         cv.put("operator", operator);
         cv.put("location", location);
+        cv.put("company", company);
+        cv.put("supplement", supplement);
 
         cv.put("data", data);
         db.insert(tableName, null, cv);
@@ -180,6 +186,10 @@ public class PictureDatabase extends SQLiteOpenHelper {
                                 infos.add(operator);
                                 String location = c.getString(c.getColumnIndex("location"));
                                 infos.add(location);
+                                String company = c.getString(c.getColumnIndex("company"));
+                                infos.add(company);
+                                String supplement = c.getString(c.getColumnIndex("supplement"));
+                                infos.add(supplement);
                                 String data = c.getString(c.getColumnIndex("data"));
                                 infos.add(data);
                             }
@@ -213,9 +223,13 @@ public class PictureDatabase extends SQLiteOpenHelper {
 
                             String location = c.getString(c.getColumnIndex("location"));
 
+                            String company = c.getString(c.getColumnIndex("company"));
+
+                            String supplement = c.getString(c.getColumnIndex("supplement"));
+
                             String data = c.getString(c.getColumnIndex("data"));
 
-                        DataBean dataBean = new DataBean(fileName,liftid,operator,location,data);
+                        DataBean dataBean = new DataBean(fileName,liftid,operator,location,company,supplement,data);
                             infos.add(dataBean);
                         }
 
@@ -275,6 +289,10 @@ public class PictureDatabase extends SQLiteOpenHelper {
                 infos.add(operator);
                 String location = c.getString(c.getColumnIndex("location"));
                 infos.add(location);
+                String company = c.getString(c.getColumnIndex("company"));
+                infos.add(company);
+                String supplement = c.getString(c.getColumnIndex("supplement"));
+                infos.add(supplement);
                 data = c.getString(c.getColumnIndex("data"));
                 infos.add(data);
             }

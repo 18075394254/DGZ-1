@@ -40,15 +40,17 @@ public class MoreMessageActivity extends BaseActivity {
         datalist=intent.getStringArrayListExtra("datalist");
         if(infolist != null && infolist.size()>0) {
 
-                list.add("设备编号：  " + infolist.get(1));
-                list.add(" 操作员：   " + infolist.get(2));
-                list.add(" 地点：     " + infolist.get(3));
+                list.add("电梯编号：  " + infolist.get(1));
+                list.add("测试人员：  " + infolist.get(2));
+                list.add("测试地点：  " + infolist.get(3));
+                list.add("测试单位：  " + infolist.get(4));
+                list.add("补充信息：  " + infolist.get(5));
 
         }
         if(datalist != null && datalist.size()>0) {
 
          for (int i =0 ;i<datalist.size();i++){
-             list.add("第"+(i+1)+"根张紧力： "+datalist.get(i)+" N");
+             list.add("第"+(i+1)+"根测试值： "+datalist.get(i));
          }
 
         }

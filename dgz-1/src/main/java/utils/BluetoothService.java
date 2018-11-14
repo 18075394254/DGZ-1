@@ -413,7 +413,7 @@ public class BluetoothService {
                                             toubytes[1] = databytes[1];
                                             if (DataTrans.BytesToString(toubytes).equals("A1")) {
 
-                                                value =   DataTrans.TwoHexToInt(databytes[2], databytes[3]);
+                                                value =   DataTrans.TwoBytesToInt(databytes[2], databytes[3]);
                                                 Log.i("mtag","value = "+value);
                                                 mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, value+"").sendToTarget();
                                                 all = new byte[1024 * 1024 * 10];
@@ -443,9 +443,22 @@ public class BluetoothService {
 
                                     case RECEIVE_CESHI:
 
-                                        msg=DataTrans.bytesToHexString(buffer);
-                                        Log.i("importallActivity", "buffer = " + buffer.length);
+                                       /* msg=DataTrans.bytesToHexString(buffer);
+                                        Log.i("ceshiActivity", "buffer = " + buffer.length);
+                                        Log.i("ceshiActivity", "msg = " + msg);
                                         mHandler.obtainMessage(BluetoothState.MESSAGE_READ,bytes,-1,msg).sendToTarget();
+                                        break;*/
+                                        for(int i=0;i<availableBytes;i++){
+                                            all[index]=bt[i];
+                                            index++;
+                                        }
+                                        if(index>1) {
+                                            msg = new String(all, 0, index);
+                                            mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, msg).sendToTarget();
+                                            index = 0;
+                                            sb.delete(0, sb.length());
+                                        }
+
                                         break;
 
                                     //全部导入数据
@@ -542,7 +555,7 @@ public class BluetoothService {
 
                     }else if(command.equals(DataTrans.FORCECONTINUETEST)) {
                         Log.i("wp123", "发送E1到设备，让设备持续测试");
-                        receiveState = RECEIVE_DATA;
+                        receiveState = RECEIVE_CESHI;
                     }
                 }else{
                     receiveState = RECEIVE_COMMAND;

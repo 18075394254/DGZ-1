@@ -35,9 +35,7 @@
         <activity android:name="activity.ParaSettingActivity"/>
         <activity android:name="activity.OpenAllActivity"/>
         <activity android:name="activity.ChooseDirActivity"/>
-        <activity android:name="activity.OnTestActivity"/>
         <activity android:name="controller.BaseActivity"/>
-        <activity android:name="activity.ResultActivity"/>
         <activity android:name="activity.DataLookActivity"/>
         <activity android:name="activity.MoreMessageActivity"/>
         <activity android:name="activity.ImportAllActivity"/>

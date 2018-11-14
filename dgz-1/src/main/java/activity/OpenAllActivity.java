@@ -230,7 +230,7 @@ public class OpenAllActivity extends Activity implements Adapter.OnShowItemClick
 
                                 //如果是xls文件，就调用系统分享到微信QQ等
                             }else if( fileName.equals(xlsName)) {
-                               final String mPath = curdir.getAbsolutePath()+"/" + fileName;
+                              /* final String mPath = curdir.getAbsolutePath()+"/" + fileName;
 
 
 
@@ -262,7 +262,7 @@ public class OpenAllActivity extends Activity implements Adapter.OnShowItemClick
                                                     }
                                                 }).
                                                 create();
-                                alertDialog.show();
+                                alertDialog.show();*/
 
 
 
@@ -703,12 +703,12 @@ public class OpenAllActivity extends Activity implements Adapter.OnShowItemClick
         adapter.setOnShowItemClickListener(this);
         //填充数据集
        // fileslist.setAdapter(adapter);
-        if (curdir.getName().equals("DGZ-1S")){
+       /* if (curdir.getName().equals("DGZ-1S")){
 
             createExcel.setVisibility(View.VISIBLE);
         }else{
             createExcel.setVisibility(View.GONE);
-        }
+        }*/
         try {
             pathText.setText(curdir.getCanonicalPath());
         } catch (Exception e) {

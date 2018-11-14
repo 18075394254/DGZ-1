@@ -80,6 +80,56 @@
     </LinearLayout>
     
     <LinearLayout 
+        android:id="@+id/comLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_below="@+id/locLinear">
+   		<TextView
+        android:id="@+id/companytext"
+        android:layout_width="100dp"
+            android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:text="@string/company" />
+
+   		<EditText
+   		    android:id="@+id/company"
+   		    android:layout_width="match_parent"
+   		    android:layout_height="35dp"
+            android:background="@color/white"
+   		    android:ems="10"
+   		    android:singleLine="true"/>
+      
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/supLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_below="@+id/comLinear">
+        <TextView
+            android:id="@+id/supplementtext"
+            android:layout_width="100dp"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:text="@string/supplement" />
+
+        <EditText
+            android:id="@+id/supplement"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/locLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,30 +138,29 @@
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:orientation="horizontal"
         android:layout_below="@+id/operator">
-   		<TextView
-        android:id="@+id/loctiontext"
-        android:layout_width="100dp"
+        <TextView
+            android:id="@+id/loctiontext"
+            android:layout_width="100dp"
             android:textSize="20sp"
-        android:layout_height="wrap_content"
-        android:text="@string/location" />
+            android:layout_height="wrap_content"
+            android:text="@string/location" />
 
-   		<EditText
-   		    android:id="@+id/location"
-   		    android:layout_width="match_parent"
-   		    android:layout_height="35dp"
+        <EditText
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
             android:background="@color/white"
-   		    android:ems="10"
-   		    android:singleLine="true"/>
-      
+            android:ems="10"
+            android:singleLine="true"/>
+
     </LinearLayout>
-    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_below="@+id/locLinear">
+        android:layout_below="@+id/supLinear">
    		<Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

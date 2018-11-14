@@ -39,6 +39,21 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="实时数据"
+        android:id="@+id/readdata"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_above="@+id/declare_menu"
+
+        />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="标定界面"
         android:id="@+id/declare_menu"
         android:layout_marginTop="30dp"
@@ -48,7 +63,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"
-android:visibility="gone"
+
         />
 
 

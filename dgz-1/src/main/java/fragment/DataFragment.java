@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -22,7 +24,9 @@ import android.widget.Toast;
 
 import com.example.user.dm_3.R;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -65,7 +69,10 @@ public class DataFragment extends Fragment {
     private String s_mLocation = "";
     Calculate calculate =new Calculate();
     private BarChart mBarChart;
-
+    float sum = 0;
+    float average;
+    float upAve = 0;
+    float downAve = 0;
     @Override
 
     public void onAttach(Activity activity)
@@ -163,6 +170,46 @@ public class DataFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setLabelCount(datalist.size());//设置标签显示的个数
 
+        for (int i = 0 ;i < datalist.size();i++){
+            sum = sum+Float.parseFloat(datalist.get(i));
+        }
+        average = sum/datalist.size();
+        upAve = (float) (average*1.05);
+        downAve = (float) (average*0.95);
+        LimitLine ll0 = new LimitLine(average, "average");
+        ll0.setLineWidth(2f);
+        ll0.setLineColor(Color.BLUE);
+        // ll0.setTypeface(tf);
+        //  ll0.enableDashedLine(10f, 10f, 0f);
+        ll0.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
+        ll0.setTextSize(10f);
+
+        LimitLine ll1 = new LimitLine(upAve, "up5%");
+        ll1.setLineWidth(2f);
+        ll1.enableDashedLine(10f, 10f, 0f);
+        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+        ll1.setTextSize(10f);
+
+        LimitLine ll2 = new LimitLine(downAve, "down5%");
+        ll2.setLineWidth(2f);
+        ll2.enableDashedLine(10f, 10f, 0f);
+        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+        ll2.setTextSize(10f);
+        YAxis leftAxis = mBarChart.getAxisLeft();
+        //重置所有限制线,以避免重叠线
+        leftAxis.removeAllLimitLines();
+        leftAxis.addLimitLine(ll0);
+        //设置优秀线
+        leftAxis.addLimitLine(ll1);
+        //设置及格线
+        leftAxis.addLimitLine(ll2);
+        //y轴最大
+        // leftAxis.setAxisMaximum(200f);
+        //y轴最小
+        // leftAxis.setAxisMinimum(0f);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawZeroLine(false);
+
         mBarChart.getAxisLeft().setDrawGridLines(false);
         mBarChart.animateY(1000);
         mBarChart.getLegend().setEnabled(false);
@@ -219,53 +266,58 @@ public class DataFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //获取sd卡目录
-                String sdpath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                String appName = getString(R.string.app_name);
+                if (Build.VERSION.SDK_INT >= 19) {
+                    //获取sd卡目录
+                    String sdpath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                    String appName = getString(R.string.app_name);
 
 
-                String wordPath = sdpath + "/" + appName + "/测试报告.pdf";
-                String picPath = sdpath + "/" + appName + "/data.png";
+                    String wordPath = sdpath + "/" + appName + "/测试报告.pdf";
+                    String picPath = sdpath + "/" + appName + "/data.png";
 
-                FileOutputStream out = null;
-                try {
-                    //calculate.CreatePng(picPath);
-                    Log.i("mtag", Environment.getExternalStorageDirectory().getPath()
-                            + "/" + appName + "/" + "data"
-                            + ".png");
-                    if (mBarChart.saveToPath("data", "/" + appName)) {
-                        FileInputStream fis = null;
-                        try {
-                            fis = new FileInputStream(picPath);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        Bitmap bitmap = BitmapFactory.decodeStream(fis);
-                        Log.i("mtag", "生成pdf文件前");
+                    FileOutputStream out = null;
+                    try {
+                        //calculate.CreatePng(picPath);
+                        Log.i("mtag", Environment.getExternalStorageDirectory().getPath()
+                                + "/" + appName + "/" + "data"
+                                + ".png");
+                        if (mBarChart.saveToPath("data", "/" + appName)) {
+                            FileInputStream fis = null;
+                            try {
+                                fis = new FileInputStream(picPath);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                            Log.i("mtag", "生成pdf文件前");
 
-                        calculate.GenPDF(getActivity(), wordPath, "DGZ-1", infolist.get(0).substring(0, 16), infolist.get(2), infolist.get(3), infolist.get(1), datalist, bitmap);
-                        Log.i("mtag", "生成pdf文件后");
-                        shareWordFile(wordPath);
-                    } else {
-                        Toast.makeText(getActivity(), "保存图片失败", Toast.LENGTH_SHORT).show();
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "写入文件出错", Toast.LENGTH_SHORT).show();
-                } finally {
-                    if (out != null) {
-                        try {
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            calculate.GenPDF(getActivity(), wordPath, "DGZ-1S", infolist.get(0).substring(0, 16), infolist.get(2), infolist.get(3), infolist.get(1),infolist.get(4),infolist.get(5), datalist, bitmap);
+                            Log.i("mtag", "生成pdf文件后");
+                            shareWordFile(wordPath);
+                        } else {
+                            Toast.makeText(getActivity(), "保存图片失败", Toast.LENGTH_SHORT).show();
                         }
 
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "写入文件出错", Toast.LENGTH_SHORT).show();
+                    } finally {
+                        if (out != null) {
+                            try {
+                                out.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
                     }
+                }else{
+                    Toast.makeText(activity, "当前手机版本过低，不能使用分享功能！", Toast.LENGTH_SHORT).show();
+
 
                 }
-
             }
         });
 

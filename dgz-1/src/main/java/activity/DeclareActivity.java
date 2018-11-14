@@ -15,6 +15,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.dm_3.R;
@@ -27,7 +28,8 @@ import utils.MyService;
  * Created by Administrator on 16-10-26.
  */
 public class DeclareActivity extends BaseActivity {
-    private Button btn_decForce,btn_decDis,btn_backMain;
+    private Button btn_decForce,btn_decDis,btn_backMain,btn_reset,btn_150N,btn_300N;
+    private TextView tv_tishi;
     private MyService.DiscoveryBinder mBinder;
 
     private int count = 0;
@@ -40,10 +42,10 @@ public class DeclareActivity extends BaseActivity {
                 btn_decDis.setTextColor(Color.BLACK);
                 count++;
                 if (count < 3){
-                    Toast.makeText(DeclareActivity.this, "第"+count+"标定已经完成！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeclareActivity.this, "第"+count+"次标定已经完成！", Toast.LENGTH_SHORT).show();
                  }else{
                     Toast.makeText(DeclareActivity.this, "三次标定已经完成！", Toast.LENGTH_SHORT).show();
-
+                    count = 0;
                 }
 
                 }
@@ -82,12 +84,13 @@ public class DeclareActivity extends BaseActivity {
         DeclareActivity.this.registerReceiver(receiver, filter);
 
         btn_decForce=getView(R.id.btn_decDisZero);
-        btn_decDis=getView(R.id.btn_decDis);
+        btn_decDis=getView(R.id.btn_decZero);
         btn_backMain=getView(R.id.btn_backMain);
+        btn_reset = getView(R.id.btn_reset);
         btn_decForce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DeclareActivity.this,DecForceActivity.class));
+                startActivity(new Intent(DeclareActivity.this, DecForceActivity.class));
             }
         });
 
@@ -99,13 +102,15 @@ public class DeclareActivity extends BaseActivity {
                 btn_decDis.setTextColor(Color.RED);
             }
         });
-        /*btn_decZero.setOnClickListener(new View.OnClickListener() {
+        btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBinder.sendMessage("H1", BluetoothState.CESHIACTIVITY);
-                btn_decZero.setTextColor(Color.RED);
+                count = 0;
+                btn_decDis.setTextColor(Color.BLACK);
+                Toast.makeText(DeclareActivity.this, "重置成功！", Toast.LENGTH_SHORT).show();
+
             }
-        });*/
+        });
         btn_backMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

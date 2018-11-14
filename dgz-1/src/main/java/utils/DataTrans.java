@@ -266,6 +266,8 @@ public class DataTrans {
 		int tmp1 = byte_h & 0xFF;
 		int tmp2 = byte_l & 0xFF;
 		int result = tmp1 * 256 + tmp2;
+		Log.i("mtag ","tmp1 = "+tmp1+"  tmp2 = "+tmp2);
+		Log.i("mtag ","result = "+result);
 		return result;
 	}
 	
@@ -274,6 +276,8 @@ public class DataTrans {
 		int tmp2 = byte_l & 0xFF;
 		tmp1 = Integer.parseInt(String.valueOf(tmp1), 16);
 		tmp2 = Integer.parseInt(String.valueOf(tmp2), 16);
+
+		Log.i("mtag ","tmp1 = "+tmp1+"  tmp2 = "+tmp2);
 		int result = tmp1 * 256 + tmp2 ;
 		return result;
 	}

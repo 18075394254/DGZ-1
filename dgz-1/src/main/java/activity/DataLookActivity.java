@@ -146,7 +146,7 @@ public class DataLookActivity extends FragmentActivity implements DataFragment.o
             case 0:
                 if (position > -1 && position < fileCount) {
                     String filename = map.get(position);
-                    calculate.setAllData(filename);
+                    //calculate.setAllData(filename);
                     viewPager.setCurrentItem(position);
                 } else if (position < 0) {
                     Toast.makeText(this, "前面没有数据了", Toast.LENGTH_SHORT).show();

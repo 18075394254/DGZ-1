@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -189,8 +190,10 @@ public class AnotherBarActivity extends Activity {
         average = sum/datalist.size();
         upAve = (float) (average*1.05);
         downAve = (float) (average*0.95);
+        Log.i("mtag","average = "+average+"  upAve = "+upAve+" downAve"+downAve);
         LimitLine ll0 = new LimitLine(average, "average");
         ll0.setLineWidth(2f);
+        ll0.setLineColor(Color.BLUE);
         // ll0.setTypeface(tf);
         //  ll0.enableDashedLine(10f, 10f, 0f);
         ll0.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
@@ -215,10 +218,7 @@ public class AnotherBarActivity extends Activity {
         leftAxis.addLimitLine(ll1);
         //设置及格线
         leftAxis.addLimitLine(ll2);
-        //y轴最大
-        // leftAxis.setAxisMaximum(200f);
-        //y轴最小
-        // leftAxis.setAxisMinimum(0f);
+
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
 
@@ -227,8 +227,12 @@ public class AnotherBarActivity extends Activity {
         mBarChart.getLegend().setEnabled(false);
 
         setData();
+        //添加数值
         for (IDataSet set : mBarChart.getData().getDataSets())
             set.setDrawValues(!set.isDrawValuesEnabled());
+        //添加边框
+        for (IBarDataSet set : mBarChart.getData().getDataSets())
+            ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
     }
 
     //设置数据

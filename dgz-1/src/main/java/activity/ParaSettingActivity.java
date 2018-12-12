@@ -60,7 +60,7 @@ public class ParaSettingActivity extends Activity
 		editor.commit();
 		
 		MainActivity.s_mLiftId = strID;
-		 MainActivity.s_mOperator = strName;
+		MainActivity.s_mOperator = strName;
 		MainActivity.s_mLocation = strLocation;
 		MainActivity.s_mCompany = strCompany;
 		MainActivity.s_mSupplement = strSupplement;
@@ -77,6 +77,8 @@ public class ParaSettingActivity extends Activity
 		idEdit.setText(MainActivity.s_mLiftId);
 		nameEdit.setText(MainActivity.s_mOperator);
 		locationEdit.setText(MainActivity.s_mLocation);
+		companyEdit.setText(MainActivity.s_mCompany);
+		supplementEdit.setText(MainActivity.s_mSupplement);
 	}
 
 }

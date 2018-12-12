@@ -127,15 +127,16 @@ public class DeviceListActivity extends Activity {
         pairedDevices = mBtAdapter.getBondedDevices();
 
         // 获得配对蓝牙的名称和地址
-        if (pairedDevices.size() > 0) {
+        /*if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
                 mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             }
         } else {
             String noDevices = "No devices found";
             mPairedDevicesArrayAdapter.add(noDevices);
-        }
-
+        }*/
+        String noDevices = "No devices found";
+        mPairedDevicesArrayAdapter.add(noDevices);
     }
 
 
@@ -205,16 +206,16 @@ public class DeviceListActivity extends Activity {
         // Remove all element from the list
         mPairedDevicesArrayAdapter.clear();
 
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
+        /*if (pairedDevices.size() > 0) {
+            *//*for (BluetoothDevice device : pairedDevices) {
                 mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-            }
+            }*//*
         } else {
             String strNoFound = getIntent().getStringExtra("no_devices_found");
             if(strNoFound == null) 
             	strNoFound = "No devices found";
             mPairedDevicesArrayAdapter.add(strNoFound);
-        }
+        }*/
         
         // 设置标题字符创
         String strScanning = getIntent().getStringExtra("scanning");
@@ -270,7 +271,7 @@ public class DeviceListActivity extends Activity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 
                 // If it's already paired, skip it, because it's been listed already
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+              /*  if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                     String strNoFound = getIntent().getStringExtra("no_devices_found");
                     if(strNoFound == null) 
                     	strNoFound = "No devices found";                    
@@ -279,17 +280,17 @@ public class DeviceListActivity extends Activity {
                 		mPairedDevicesArrayAdapter.remove(strNoFound);
                 	}
                 	mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                }
-                
+                }*/
+                mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             // 搜索完成时
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                setProgressBarIndeterminateVisibility(false);
-                String strSelectDevice = getIntent().getStringExtra("select_device");
-                if(strSelectDevice == null)
-                    Toast.makeText(DeviceListActivity.this, "搜索完成，点击连接蓝牙", Toast.LENGTH_SHORT).show();
-                strSelectDevice = "Select a device to connect";
-                tv_title.setText(strSelectDevice);
-            }
+        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+            setProgressBarIndeterminateVisibility(false);
+            String strSelectDevice = getIntent().getStringExtra("select_device");
+            if(strSelectDevice == null)
+                Toast.makeText(DeviceListActivity.this, "搜索完成，点击连接蓝牙", Toast.LENGTH_SHORT).show();
+            strSelectDevice = "Select a device to connect";
+            tv_title.setText(strSelectDevice);
+        }
         }
     };
 

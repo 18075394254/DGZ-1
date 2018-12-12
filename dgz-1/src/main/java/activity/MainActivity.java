@@ -186,9 +186,14 @@ public class MainActivity extends BaseActivity {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //跳转到搜索蓝牙界面，并有返回值
-                startActivityForResult(new Intent(MainActivity.this, DeviceListActivity.class), BluetoothState.REQUEST_CONNECT_DEVICE);
-            }
+                //关闭蓝牙连接
+                if (!isConnect) {
+                    //跳转到搜索蓝牙界面，并有返回值
+                    startActivityForResult(new Intent(MainActivity.this, DeviceListActivity.class), BluetoothState.REQUEST_CONNECT_DEVICE);
+                }else{
+                    Toast.makeText(MainActivity.this, "蓝牙未连接", Toast.LENGTH_SHORT).show();
+                }
+                     }
         });
         //设置信息按钮监听
         setInfoButton.setOnClickListener(new View.OnClickListener() {
@@ -201,13 +206,13 @@ public class MainActivity extends BaseActivity {
         onTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (isConnect) {
+                if (isConnect) {
                     Intent intent = new Intent(MainActivity.this, TestActivity.class);
                    // intent.putExtra("name", name);
                     startActivity(intent);
-                /*} else {
+                } else {
                     Toast.makeText(MainActivity.this, "未连接设备蓝牙", Toast.LENGTH_SHORT).show();
-                }*/
+                }
             }
         });
         //跳转到说明书界面
@@ -316,9 +321,14 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch(position){
                     case 0:
-                        //跳转到搜索蓝牙界面
-                        startActivityForResult(new Intent(MainActivity.this, DeviceListActivity.class), BluetoothState.REQUEST_CONNECT_DEVICE);
-                        break;
+                        //关闭蓝牙连接
+                        if (!isConnect) {
+                            //跳转到搜索蓝牙界面
+                            startActivityForResult(new Intent(MainActivity.this, DeviceListActivity.class), BluetoothState.REQUEST_CONNECT_DEVICE);
+                        }else{
+                            Toast.makeText(MainActivity.this, "蓝牙未连接", Toast.LENGTH_SHORT).show();
+                        }
+                         break;
                     case 1:
                         //关闭蓝牙连接
                         if (isConnect) {
@@ -402,6 +412,8 @@ public class MainActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if(resultCode == Activity.RESULT_OK) {
+                //蓝牙设备返回时初始化一下
+                mBinder.setupService();
                 //得到蓝牙的地址
                 deviceAddress = data.getExtras().getString(BluetoothState.EXTRA_DEVICE_ADDRESS);
                 //得到蓝牙的名称

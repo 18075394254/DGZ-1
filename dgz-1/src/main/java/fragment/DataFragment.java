@@ -98,7 +98,11 @@ public class DataFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         Log.i("Fragment", "Fragment被关闭了！");
-
+        datalist.clear();
+        sum = 0;
+        average = 0;
+        downAve = 0;
+        upAve = 0;
     }
 
 
@@ -165,6 +169,7 @@ public class DataFragment extends Fragment {
         mBarChart.setDrawBarShadow(false);
         mBarChart.setDrawGridBackground(false);
 
+
         XAxis xAxis = mBarChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
@@ -176,11 +181,10 @@ public class DataFragment extends Fragment {
         average = sum/datalist.size();
         upAve = (float) (average*1.05);
         downAve = (float) (average*0.95);
+        Log.i("Fragment","average = "+average+"  upAve = "+upAve+" downAve"+downAve);
         LimitLine ll0 = new LimitLine(average, "average");
         ll0.setLineWidth(2f);
         ll0.setLineColor(Color.BLUE);
-        // ll0.setTypeface(tf);
-        //  ll0.enableDashedLine(10f, 10f, 0f);
         ll0.setLabelPosition(LimitLine.LimitLabelPosition.LEFT_TOP);
         ll0.setTextSize(10f);
 
@@ -204,19 +208,22 @@ public class DataFragment extends Fragment {
         //设置及格线
         leftAxis.addLimitLine(ll2);
         //y轴最大
-        // leftAxis.setAxisMaximum(200f);
+         //leftAxis.setAxisMaximum(average*2);
         //y轴最小
         // leftAxis.setAxisMinimum(0f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        leftAxis.setDrawZeroLine(false);
+        leftAxis.setDrawZeroLine(true);
 
-        mBarChart.getAxisLeft().setDrawGridLines(false);
+        leftAxis.setDrawGridLines(false);
         mBarChart.animateY(1000);
         mBarChart.getLegend().setEnabled(false);
 
         setData();
         for (IDataSet set : mBarChart.getData().getDataSets())
             set.setDrawValues(!set.isDrawValuesEnabled());
+
+        for (IBarDataSet set : mBarChart.getData().getDataSets())
+            ((BarDataSet) set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
         return view;
 
     }

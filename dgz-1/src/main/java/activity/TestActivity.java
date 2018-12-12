@@ -55,13 +55,13 @@ public class TestActivity extends BaseActivity {
     private TextView tv_curNum,tv_curState,tv_curTest;
     private ImageView backImage;
                   //总根数        当前根数       测试总次数      当前测试次数
-    private int totalCount =0 ,curCount = 1, testCount = 1,curTestCount = 1;
+    private int totalRope =0 ,curRope = 1, testCount = 1,curTestCount = 1;
     ArrayList<String> mArrayList = new ArrayList<>();
     PictureDatabase pictureDB;
     SQLiteDatabase db;
     StringBuilder dataString = new StringBuilder();
     private boolean isConnect=true;
-    private boolean isStart=false;
+
     private boolean cantest=true;
     Handler mHandler = new Handler(){
         @Override
@@ -84,27 +84,27 @@ public class TestActivity extends BaseActivity {
                     tv_curNum.setText("本条重新测试完成,点击测试下一条");
                     tv_curState.setText("测试完成");
                     flag = false;
+                    Log.i("mtag", "curRope = " + curRope + " totalRope = " + totalRope);
+                    Log.i("mtag","curTestCount = "+curTestCount+" testCount = "+testCount);
+                    if (curRope == totalRope && curTestCount == testCount){
+                        btn_start.setEnabled(false);
+                        btn_look.setVisibility(View.VISIBLE);
+                    }
                 }else {
 
                     //如果是最后一次测试
-                    if (curCount == totalCount) {
+                    if (curRope == totalRope) {
                         //当测试次数大于1时
                         if (testCount > 1) {
 
                             tv_curState.setText("测试完成");
                             if (curTestCount == testCount) {
                                 tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击查看详细数据");
-                                btn_reTest.setVisibility(View.INVISIBLE);
-                                dataString.append(value + ",");
-                                curCount++;
-                                curTestCount = 1;
-                                onSave();
                                 btn_look.setVisibility(View.VISIBLE);
                                 btn_start.setEnabled(false);
                             } else {
                                 tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curTestCount + 1) + "次");
-                                dataString.append(value + ",");
-                                //  curCount++;
+
                                 curTestCount++;
                             }
 
@@ -112,10 +112,7 @@ public class TestActivity extends BaseActivity {
                             //当测试次数只有一次时
                         } else {
                             tv_curState.setText("测试完成");
-                            tv_curNum.setText("第" + curCount + "根测试完成," + "点击查看详细数据");
-                            btn_reTest.setVisibility(View.INVISIBLE);
-                            dataString.append(value + "");
-                            onSave();
+                            tv_curNum.setText("第" + curRope + "根测试完成," + "点击查看详细数据");
                             btn_look.setVisibility(View.VISIBLE);
                             btn_start.setEnabled(false);
                         }
@@ -126,14 +123,13 @@ public class TestActivity extends BaseActivity {
                         if (testCount > 1) {
                             tv_curState.setText("测试完成");
                             if (curTestCount == testCount) {
-                                tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curCount + 1) + "根");
-                                dataString.append(value + ",");
-                                curCount++;
+                                tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curRope + 1) + "根");
+
+                                curRope++;
                                 curTestCount = 1;
                             } else {
                                 tv_curNum.setText("第" + curTestCount + "次测试完成," + "点击测试第" + (curTestCount + 1) + "次");
-                                dataString.append(value + ",");
-                                //  curCount++;
+
                                 curTestCount++;
                             }
 
@@ -141,19 +137,16 @@ public class TestActivity extends BaseActivity {
                         } else if (testCount == 1) {
 
                             tv_curState.setText("测试完成");
-                            if (curCount == totalCount) {
-                                tv_curNum.setText("第" + curCount + "根测试完成," + "点击查看详细数据");
-                                btn_reTest.setVisibility(View.INVISIBLE);
-                                dataString.append(value + "");
+                            if (curRope == totalRope) {
+                                tv_curNum.setText("第" + curRope + "根测试完成," + "点击查看详细数据");
 
-                                onSave();
                                 btn_look.setVisibility(View.VISIBLE);
                                 btn_start.setEnabled(false);
 
                             } else {
-                                tv_curNum.setText("第" + curCount + "根测试完成," + "点击测试第" + (curCount + 1) + "根");
-                                dataString.append(value + ",");
-                                curCount++;
+                                tv_curNum.setText("第" + curRope + "根测试完成," + "点击测试第" + (curRope + 1) + "根");
+
+                                curRope++;
                             }
 
                         }
@@ -248,15 +241,20 @@ public class TestActivity extends BaseActivity {
 
                         //判断有无输入根数
                         if (ed_setNum.getText().toString().length() != 0 && ed_setNum.getText().toString().length() != 0) {
-                            totalCount = Integer.parseInt(ed_setNum.getText().toString());
+                            totalRope = Integer.parseInt(ed_setNum.getText().toString());
                             testCount = Integer.parseInt(ed_setCount.getText().toString());
-                            ed_setNum.setEnabled(false);
-                            ed_setCount.setEnabled(false);
-                            btn_sure.setEnabled(false);
-                            mLayout2.setVisibility(View.VISIBLE);
-                            mLayout3.setVisibility(View.VISIBLE);
-                            tv_curTest.setText("一共" + totalCount + "根, 当前为第" + curCount + "根");
-                            //mBinder.sendbytes(DataTrans.sendSetDataBytes(MainActivity.s_mLiftId, MainActivity.s_mOperator, MainActivity.s_mLocation, totalCount, testCount), BluetoothState.ONTESTACTIVITY);
+                            if (totalRope == 0 || testCount == 0){
+                                Toast.makeText(TestActivity.this, "绳数或次数不能为0!", Toast.LENGTH_SHORT).show();
+
+                            }else {
+                                ed_setNum.setEnabled(false);
+                                ed_setCount.setEnabled(false);
+                                btn_sure.setEnabled(false);
+                                mLayout2.setVisibility(View.VISIBLE);
+                                mLayout3.setVisibility(View.VISIBLE);
+                                tv_curTest.setText("一共" + totalRope + "根, 当前为第" + curRope + "根");
+                                //mBinder.sendbytes(DataTrans.sendSetDataBytes(MainActivity.s_mLiftId, MainActivity.s_mOperator, MainActivity.s_mLocation, totalRope, testCount), BluetoothState.ONTESTACTIVITY);
+                            }
                         } else {
                             Toast.makeText(TestActivity.this, "请输入设置参数", Toast.LENGTH_SHORT).show();
                         }
@@ -274,19 +272,20 @@ public class TestActivity extends BaseActivity {
             public void onClick(View v) {
                 if (isConnect) {
                     if (cantest) {
-                        isStart = true;
+
                         mBinder.sendMessage("A1", BluetoothState.ONTESTACTIVITY);
                         mLayout2.setVisibility(View.VISIBLE);
                         tv_curState.setText("正在测试中....");
+                        btn_reTest.setEnabled(true);
                         //分辨是否为重新测试
                         if (flag){
 
                         }else {
                             if (curTestCount == testCount) {
-                                tv_curTest.setText("一共" + totalCount + "根, 当前为第" + curCount + "根");
+                                tv_curTest.setText("一共" + totalRope + "根, 当前为第" + curRope + "根");
                                 tv_curNum.setText("当前为第" + curTestCount + "次测试");
                             } else {
-                                tv_curTest.setText("一共" + totalCount + "根, 当前为第" + curCount + "根");
+                                tv_curTest.setText("一共" + totalRope + "根, 当前为第" + curRope + "根");
                                 tv_curNum.setText("当前为第" + curTestCount + "次测试");
                             }
 
@@ -301,22 +300,6 @@ public class TestActivity extends BaseActivity {
             }
         });
 
-       /* btn_stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isStart) {
-                    mBinder.sendMessage("B1", BluetoothState.ONTESTACTIVITY);
-                    btn_start.setTextColor(Color.BLACK);
-                    btn_stop.setTextColor(Color.RED);
-                    Log.i("mtag", "发送B1的时间 " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
-                    isStart=false;
-                }else{
-                    Toast.makeText(TestActivity.this, "还未开始测试", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });*/
-
         //复位按钮
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -326,8 +309,8 @@ public class TestActivity extends BaseActivity {
                 mLayout3.setVisibility(View.GONE);
                 btn_look.setVisibility(View.GONE);
                 btn_reTest.setVisibility(View.VISIBLE);
-                curCount =1;
-                totalCount = 0;
+                curRope =1;
+                totalRope = 0;
                 curTestCount = 1;
                 ed_setNum.setEnabled(true);
                 ed_setCount.setEnabled(true);
@@ -353,7 +336,9 @@ public class TestActivity extends BaseActivity {
                             mArrayList.remove(mArrayList.size() - 1);
 
                         }
-
+                btn_start.setEnabled(true);
+                btn_reTest.setEnabled(false);
+                btn_look.setVisibility(View.INVISIBLE);
                         flag = true;
                 tv_curNum.setText("当前为重新测试");
 
@@ -366,7 +351,9 @@ public class TestActivity extends BaseActivity {
         btn_look.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    onSave();
+                btn_reTest.setEnabled(false);
+                btn_start.setEnabled(false);
                     Intent intent = new Intent(TestActivity.this, AnotherBarActivity.class);
                     intent.putStringArrayListExtra("list", mArrayList);
                     startActivity(intent);
@@ -398,7 +385,13 @@ public class TestActivity extends BaseActivity {
 
         return list;
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+        unregisterReceiver(mReceiver);
+        unbindService(connection);
+    }
     //将得到的数据存储
     private void onSave() {
         //获取sd卡目录
@@ -416,10 +409,9 @@ public class TestActivity extends BaseActivity {
         String dateStr = formatter.format(curDate);
         String name = dateStr + "-" + String.valueOf(indexDGZ) + ".dgz";
 
-        //当测试次数大于1时，调整数组
-        if (testCount > 1){
-            mArrayList = aveArrayList(mArrayList,testCount);
-        }
+
+        mArrayList = aveArrayList(mArrayList,testCount);
+
         //保存数据到数据库
 
         pictureDB.initDataBase(db,MyApplication.DGZFORCE, name, MainActivity.s_mLiftId, MainActivity.s_mOperator, MainActivity.s_mLocation,MainActivity.s_mCompany,MainActivity.s_mSupplement,dataString.toString());

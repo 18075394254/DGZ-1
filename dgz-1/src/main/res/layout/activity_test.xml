@@ -159,11 +159,12 @@
             android:textSize="20sp"
             android:gravity="center"
             android:textColor="@color/red"
-            android:enabled="false"
+            android:focusable="false"
             android:singleLine="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            />
        <Button
            android:id="@+id/startTest"
            android:layout_width="match_parent"

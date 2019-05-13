@@ -351,13 +351,18 @@ public class Calculate {
         canvas.drawText("测试时间： "+date, leftMargin, titleBaseLine + 40, paint);
         canvas.drawText("测试人员： "+people, leftMargin, titleBaseLine + 60, paint);
         canvas.drawText("测试地点： "+location, leftMargin, titleBaseLine + 80, paint);
-        canvas.drawText("电梯编号： "+number, leftMargin, titleBaseLine + 100, paint);
-        canvas.drawText("测试单位： "+company, leftMargin, titleBaseLine + 120, paint);
-        canvas.drawText("补充信息： "+supplement, leftMargin, titleBaseLine + 140, paint);
-
+        canvas.drawText("电梯编号： "+number, /*leftMargin*/center, titleBaseLine + 40, paint);
+        canvas.drawText("测试单位： "+company, /*leftMargin*/center, titleBaseLine + 60, paint);
+        canvas.drawText("补充信息： "+supplement, /*leftMargin*/center, titleBaseLine + 80, paint);
+        curline = titleBaseLine + 80;
         for (int i = 0;i < datalist.size();i++){
-            curline = titleBaseLine + 160+(i*20);
-            canvas.drawText("第"+(i+1)+"根钢丝绳测试值:  "+datalist.get(i), leftMargin, curline, paint);
+            if(i%2 == 0 ){
+                curline = curline +20;
+                canvas.drawText("第"+(i+1)+"根钢丝绳测试值:  "+datalist.get(i), leftMargin, curline, paint);
+            }else{
+                canvas.drawText("第"+(i+1)+"根钢丝绳测试值:  "+datalist.get(i), /*leftMargin*/center, curline, paint);
+            }
+
         }
 
         canvas.drawBitmap(scale(bitmap, 0.4f, 0.4f), leftMargin, curline +20, paint);

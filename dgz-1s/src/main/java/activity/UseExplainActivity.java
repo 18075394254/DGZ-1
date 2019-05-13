@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.user.dm_3.R;
@@ -39,7 +41,7 @@ public class UseExplainActivity extends BaseActivity implements OnPageChangeList
     public static final int PERMISSION_CODE = 42042;
 
     public static final String SAMPLE_FILE = "sample.pdf";
-    public static final String DM3_FILE = "DGZ-1S.pdf";
+    public static final String DGZ_FILE = "DGZ-1S.pdf";
 
     PDFView pdfView;
 
@@ -48,6 +50,8 @@ public class UseExplainActivity extends BaseActivity implements OnPageChangeList
     Integer pageNumber = 0;
 
     String pdfFileName;
+    private ImageView backimage;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -58,8 +62,15 @@ public class UseExplainActivity extends BaseActivity implements OnPageChangeList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_use);
+        backimage= (ImageView) findViewById(R.id.back);
+        backimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UseExplainActivity.this.finish();
+            }
+        });
         pdfView = getView(R.id.pdfView);
-        displayFromAsset(DM3_FILE);
+        displayFromAsset(DGZ_FILE);
 
     }
 
@@ -79,7 +90,7 @@ public class UseExplainActivity extends BaseActivity implements OnPageChangeList
         pdfFileName = assetFileName;
         pdfView.setBackgroundColor(Color.LTGRAY);
         setTitle(pdfFileName);
-        pdfView.fromAsset(DM3_FILE)
+        pdfView.fromAsset(DGZ_FILE)
                 .defaultPage(pageNumber)
                 .onPageChange(this)
                 .enableAnnotationRendering(true)

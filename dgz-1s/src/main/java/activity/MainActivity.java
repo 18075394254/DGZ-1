@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -136,6 +137,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制为竖屏
         setContentView(R.layout.activity_main);
         connectButton = getView(R.id.connect);
         setInfoButton = getView(R.id.setinfo);
@@ -186,12 +188,12 @@ public class MainActivity extends BaseActivity {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //关闭蓝牙连接
+
                 if (!isConnect) {
                     //跳转到搜索蓝牙界面，并有返回值
                     startActivityForResult(new Intent(MainActivity.this, DeviceListActivity.class), BluetoothState.REQUEST_CONNECT_DEVICE);
                 }else{
-                    Toast.makeText(MainActivity.this, "蓝牙未连接", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "蓝牙已连接，请断开蓝牙后再搜索！", Toast.LENGTH_SHORT).show();
                 }
                      }
         });
@@ -412,14 +414,14 @@ public class MainActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if(resultCode == Activity.RESULT_OK) {
-                //蓝牙设备返回时初始化一下
+                //蓝牙设备返回时初始化一下,防止第一次蓝牙未开启，打开后蓝牙连接不上
                 mBinder.setupService();
                 //得到蓝牙的地址
                 deviceAddress = data.getExtras().getString(BluetoothState.EXTRA_DEVICE_ADDRESS);
                 //得到蓝牙的名称
                 deviceName = data.getExtras().getString(BluetoothState.EXTRA_DEVICE_NAME);
                 //判断是不是目标蓝牙，是的话就配对连接，不是就提示
-             //   if (deviceName.contains("DM-3") ) {
+                if (deviceName.contains("DGZ-1S") ) {
                     // mBinder.connectd(deviceAddress, deviceName);
                     BluetoothAdapter btAdapt = BluetoothAdapter.getDefaultAdapter();
                     BluetoothDevice btDev = btAdapt.getRemoteDevice(deviceAddress);
@@ -438,9 +440,9 @@ public class MainActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-              /*  } else {
+                } else {
                     Toast.makeText(this, "连接的不是测试仪器的蓝牙，请重新选择！", Toast.LENGTH_SHORT).show();
-                }*/
+                }
             }
 
 

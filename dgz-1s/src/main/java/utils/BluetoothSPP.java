@@ -194,7 +194,7 @@ public class BluetoothSPP {
                         if (mDataReceivedListener != null) {
                             Log.i("mtag","SPP Value = "+message);
                             mDataReceivedListener.onDataReceived(bytes, message);
-                            Log.i("wp123", "messageData 接收到数据了");
+                            Log.i("wp123", "mChatService.getState() =  "+mChatService.getState());
                         }
                     }
 
@@ -324,12 +324,13 @@ public class BluetoothSPP {
     }
     
     public void send(String data, boolean CRLF) {
+        Log.i("BluetoothSPP", "mChatService.getState()  " + mChatService.getState());
         if(mChatService.getState() == BluetoothState.STATE_CONNECTED) {
             if(CRLF)
               //  data += "\r\n";
-            Log.i("wp123", "data  " + data);
+            Log.i("BluetoothSPP", "data  " + data);
             byte[] bt=data.getBytes();
-            Log.i("wp123", "btlength  " + bt.length);
+            Log.i("BluetoothSPP", "btlength  " + bt.length);
             mChatService.write(data.getBytes());
         }
     }

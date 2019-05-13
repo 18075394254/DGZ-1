@@ -25,7 +25,7 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent1, int flags, int startId) {
-
+        Log.i("MyService","服务中的onStartCommand开启");
 
         bt=new BluetoothSPP(MyService.this);
 
@@ -36,6 +36,7 @@ public class MyService extends Service {
                 bt.setupService();
                 bt.startService(BluetoothState.DEVICE_ANDROID);
             }
+            state = BluetoothState.CESHIACTIVITY;
         }
 
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
@@ -153,7 +154,10 @@ public class MyService extends Service {
             bt.send(bytes,false);
             state=activity;
         }
-
+        //发送字符数组
+        public void setState(int activity){
+            state=activity;
+        }
         public void closeConnect(){
             bt.stopService();
         }

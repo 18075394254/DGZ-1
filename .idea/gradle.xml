@@ -10,10 +10,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/android-pdf-viewer" />
-            <option value="$PROJECT_DIR$/dgz-1" />
+            <option value="$PROJECT_DIR$/dgz-1s" />
             <option value="$PROJECT_DIR$/slidelibrary" />
           </set>
         </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

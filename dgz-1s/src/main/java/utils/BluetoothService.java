@@ -49,11 +49,7 @@ public class BluetoothService {
     private static final int RECEIVE_CESHI = 3;
     //导入数据标志
     private static final int RECEIVE_ALLDATA = 4;
-    private static final int RECEIVE_DEC_FORCE_SPEED_RATE = 5;
-    private static final int RECEIVE_FORCE_SPEED_TESTVALUE = 6;
-    //接收三组数据的状态
-    private static final int RECEIVE_THREEDATA = 7;
-    private static final int RECEIVE_ITIME = 9;
+
     //初始值设为接收命令状态
     private int receiveState = RECEIVE_COMMAND;
 
@@ -166,6 +162,7 @@ public class BluetoothService {
         mHandler.sendMessage(msg);
 
         setState(BluetoothState.STATE_CONNECTED);
+        Log.i("BluetoothService", "messageData 接收到数据了");
     }
 
     // Stop all threads

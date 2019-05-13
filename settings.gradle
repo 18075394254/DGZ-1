@@ -1,1 +1,1 @@
-include ':dgz-1', ':slidelibrary', ':android-pdf-viewer'
+include ':dgz-1s', ':slidelibrary', ':android-pdf-viewer'

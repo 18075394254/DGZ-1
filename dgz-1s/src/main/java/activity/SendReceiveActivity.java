@@ -49,7 +49,7 @@ public class SendReceiveActivity extends BaseActivity {
             String message = (String) msg.obj;
             sb.append(message+" ");
             receiveText.setText(sb.toString());
-            mBinder.sendMessage("A1", BluetoothState.CESHIACTIVITY);
+            //mBinder.sendMessage("A1", BluetoothState.CESHIACTIVITY);
         }
     };
 
@@ -95,7 +95,8 @@ public class SendReceiveActivity extends BaseActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBinder.sendMessage(sendEdit.getText().toString(), BluetoothState.CESHIACTIVITY);
+                String message = sendEdit.getText().toString();
+                mBinder.sendMessage(message, BluetoothState.CESHIACTIVITY);
                 sendEdit.setText("");
             }
         });

@@ -253,7 +253,6 @@ public class TestActivity extends BaseActivity {
                                 mLayout2.setVisibility(View.VISIBLE);
                                 mLayout3.setVisibility(View.VISIBLE);
                                 tv_curTest.setText("一共" + totalRope + "根, 当前为第" + curRope + "根");
-                                //mBinder.sendbytes(DataTrans.sendSetDataBytes(MainActivity.s_mLiftId, MainActivity.s_mOperator, MainActivity.s_mLocation, totalRope, testCount), BluetoothState.ONTESTACTIVITY);
                             }
                         } else {
                             Toast.makeText(TestActivity.this, "请输入设置参数", Toast.LENGTH_SHORT).show();
@@ -376,7 +375,6 @@ public class TestActivity extends BaseActivity {
             value = value/testCount;
             //保留一位小数
             BigDecimal b = new BigDecimal(value);
-
             value = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
             list.add(value+"");
             dataString.append(value + ",");

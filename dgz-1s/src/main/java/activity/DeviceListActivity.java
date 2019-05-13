@@ -70,7 +70,7 @@ public class DeviceListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//强制为竖屏
-        // Setup the window
+
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         int listId = getIntent().getIntExtra("layout_list", R.layout.activity_device_list);
         setContentView(listId);
@@ -151,6 +151,7 @@ public class DeviceListActivity extends Activity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //授权成功
                     Toast.makeText(DeviceListActivity.this, "正在搜索蓝牙设备...", Toast.LENGTH_SHORT).show();
+                   //开始搜索
                     doDiscovery();
                 } else {
                     //授权拒绝
@@ -184,6 +185,7 @@ public class DeviceListActivity extends Activity {
             }
         } else {
             Toast.makeText(DeviceListActivity.this, "正在搜索蓝牙设备...", Toast.LENGTH_SHORT).show();
+            //开始搜索
             doDiscovery();
         }
     }

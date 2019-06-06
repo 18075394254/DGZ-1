@@ -48,6 +48,7 @@ import android.widget.Toast;
 
 import com.example.user.dm_3.R;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import utils.BluetoothState;
@@ -62,6 +63,7 @@ public class DeviceListActivity extends Activity {
     //蓝牙适配器
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
+    private ArrayList<String> mDevicesArray = new ArrayList<>();
     private Set<BluetoothDevice> pairedDevices;
     private Button scanButton;
     private TextView tv_title;
@@ -271,19 +273,24 @@ public class DeviceListActivity extends Activity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // 通过intent获取到BluetoothDevice
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                
-                // If it's already paired, skip it, because it's been listed already
-              /*  if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    String strNoFound = getIntent().getStringExtra("no_devices_found");
-                    if(strNoFound == null) 
-                    	strNoFound = "No devices found";                    
-                    
-                	if(mPairedDevicesArrayAdapter.getItem(0).equals(strNoFound)) {
-                		mPairedDevicesArrayAdapter.remove(strNoFound);
-                	}
-                	mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                }*/
-                mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                Log.i("DeviceListActivity","device = "+device.getClass());
+
+                if (device.getName() != null) {
+                    if (device.getName().equals("DGZ-1S")) {
+
+                        if (mPairedDevicesArrayAdapter.getCount() > 0){
+                            //查看列表中是否有重复的蓝牙设备，没有就添加
+                            int ishave = mPairedDevicesArrayAdapter.getPosition(device.getName() + "\n" + device.getAddress());
+                           // Toast.makeText(DeviceListActivity.this," ishave = "+ishave,Toast.LENGTH_SHORT).show();
+                            if (ishave == -1){
+                                mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                            }
+                        }else{
+                            mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                        }
+                    }
+                }
+
             // 搜索完成时
         } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
             setProgressBarIndeterminateVisibility(false);

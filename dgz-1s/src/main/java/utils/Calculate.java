@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,6 +38,9 @@ public class Calculate {
     //数据是否合格 0是1否
     private int isQualified = 0;
     private HashMap map=new HashMap();
+    private float sum =0;
+    private float average = 0;
+
     public Calculate() {
 
     }
@@ -355,14 +359,30 @@ public class Calculate {
         canvas.drawText("测试单位： "+company, /*leftMargin*/center, titleBaseLine + 60, paint);
         canvas.drawText("补充信息： "+supplement, /*leftMargin*/center, titleBaseLine + 80, paint);
         curline = titleBaseLine + 80;
-        for (int i = 0;i < datalist.size();i++){
-            if(i%2 == 0 ){
-                curline = curline +20;
-                canvas.drawText("第"+(i+1)+"根钢丝绳测试值:  "+datalist.get(i), leftMargin, curline, paint);
-            }else{
-                canvas.drawText("第"+(i+1)+"根钢丝绳测试值:  "+datalist.get(i), /*leftMargin*/center, curline, paint);
-            }
 
+        if (datalist != null && datalist.size() > 0) {
+
+            for (int i = 0; i < datalist.size(); i++) {
+                sum = sum + Float.parseFloat(datalist.get(i));
+            }
+            average = sum / datalist.size();
+            Log.i("Calculate","average = "+average);
+
+            for (int i = 0; i < datalist.size(); i++) {
+                float dataValue = Float.parseFloat(datalist.get(i));
+                float biasValue = (dataValue - average) * 100 / average;//偏差量值
+                //保留两位小数
+                BigDecimal b = new BigDecimal(biasValue);
+
+                float biasValueSet = b.setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+                if (i % 2 == 0) {
+                    curline = curline + 20;
+                    canvas.drawText("第" + (i + 1) + "根测试值:  " + datalist.get(i) + "   偏差量:  " + biasValueSet + "%", leftMargin, curline, paint);
+                } else {
+                    canvas.drawText("第" + (i + 1) + "根测试值:  " + datalist.get(i) + "   偏差量:  " + biasValueSet + "%", /*leftMargin*/center, curline, paint);
+                }
+
+            }
         }
 
         canvas.drawBitmap(scale(bitmap, 0.4f, 0.4f), leftMargin, curline +20, paint);

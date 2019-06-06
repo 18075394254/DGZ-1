@@ -181,6 +181,7 @@ public class MainActivity extends BaseActivity {
         loadConfig();
         //侧滑菜单的设置
         onSlidingMenu();
+
     }
     //按钮的监听事件
     private void onClick(){

@@ -110,10 +110,7 @@ public class SendReceiveActivity extends BaseActivity {
                     boolean isSuccess = file.mkdirs();
                     System.out.println("isSuccess:" + isSuccess);
                 }
-                /*if (file.exists()) {
-                    DeleteFile(file);
-                    //Toast.makeText(mContext, "删除DM-2成功", Toast.LENGTH_SHORT).show();
-                }*/
+
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
